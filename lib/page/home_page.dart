@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'daftar_poli_page.dart';
+import 'doctor_list_page.dart';
 import 'profile_klinik_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -181,6 +182,32 @@ class _HomePageState extends State<HomePage>
                                 milliseconds: 400,
                               ),
                               pageBuilder: (_, _, _) => const DaftarPoliPage(),
+                              transitionsBuilder: (_, animation, _, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      _buildMenuCard(
+                        icon: Icons.person_search_rounded,
+                        title: 'Cari Dokter',
+                        subtitle: 'Temukan dokter spesialis terbaik kami',
+                        gradient: const [Color(0xFFFF7043), Color(0xFFFF8A65)],
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              transitionDuration: const Duration(
+                                milliseconds: 400,
+                              ),
+                              pageBuilder: (_, _, _) => const DoctorListPage(),
                               transitionsBuilder: (_, animation, _, child) {
                                 return FadeTransition(
                                   opacity: animation,
