@@ -112,19 +112,32 @@ class _LoginPageState extends State<LoginPage>
     return Scaffold(
       body: Stack(
         children: [
+          // Static background gradient
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFFF5F5F1), Color(0xFFE8F5F3)],
+              ),
+            ),
+          ),
+
           // Animated blob background
-          AnimatedBuilder(
-            animation: _blobAnimation,
-            builder: (context, child) {
-              return CustomPaint(
-                painter: OrganicBlobPainter(
-                  animationValue: _blobAnimation.value,
-                  primaryColor: const Color(0xFF1A7F7A),
-                  secondaryColor: const Color(0xFF4DB6AC),
-                ),
-                size: Size.infinite,
-              );
-            },
+          RepaintBoundary(
+            child: AnimatedBuilder(
+              animation: _blobAnimation,
+              builder: (context, child) {
+                return CustomPaint(
+                  painter: OrganicBlobPainter(
+                    animationValue: _blobAnimation.value,
+                    primaryColor: const Color(0xFF1A7F7A),
+                    secondaryColor: const Color(0xFF4DB6AC),
+                  ),
+                  size: Size.infinite,
+                );
+              },
+            ),
           ),
 
           // Login form
@@ -355,16 +368,6 @@ class OrganicBlobPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Background gradient
-    final bgPaint = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [const Color(0xFFF5F5F1), const Color(0xFFE8F5F3)],
-      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
-
-    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), bgPaint);
-
     // Top blob
     final topBlobPaint = Paint()
       ..color = primaryColor.withOpacity(0.15)
@@ -438,6 +441,8 @@ class OrganicBlobPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant OrganicBlobPainter oldDelegate) {
-    return oldDelegate.animationValue != animationValue;
+    return oldDelegate.animationValue != animationValue ||
+        oldDelegate.primaryColor != primaryColor ||
+        oldDelegate.secondaryColor != secondaryColor;
   }
 }

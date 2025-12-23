@@ -23,55 +23,7 @@ class _DaftarLayananPageState extends State<DaftarLayananPage>
       duration: const Duration(milliseconds: 1000),
     )..forward();
 
-    // Determine services using if-else as required
-    _layanan = _getLayananByPoli(widget.poli.name);
-  }
-
-  /// Get services based on poli name using if-else
-  List<String> _getLayananByPoli(String poliName) {
-    if (poliName == 'Poli Umum') {
-      return [
-        'Pemeriksaan Umum',
-        'Konsultasi Dokter',
-        'Cek Tekanan Darah',
-        'Cek Gula Darah',
-        'Surat Keterangan Sehat',
-      ];
-    } else if (poliName == 'Poli Gigi') {
-      return [
-        'Tambal Gigi',
-        'Cabut Gigi',
-        'Scaling (Pembersihan Karang)',
-        'Perawatan Saluran Akar',
-        'Pemutihan Gigi',
-      ];
-    } else if (poliName == 'Poli Anak') {
-      return [
-        'Pemeriksaan Anak',
-        'Imunisasi',
-        'Konsultasi Tumbuh Kembang',
-        'Penanganan Demam',
-        'Konsultasi Gizi Anak',
-      ];
-    } else if (poliName == 'Poli Mata') {
-      return [
-        'Pemeriksaan Mata',
-        'Pengukuran Visus',
-        'Penanganan Mata Merah',
-        'Konsultasi Kacamata',
-        'Pemeriksaan Katarak',
-      ];
-    } else if (poliName == 'Poli THT') {
-      return [
-        'Pemeriksaan Telinga',
-        'Pemeriksaan Hidung',
-        'Pemeriksaan Tenggorokan',
-        'Penanganan Sinusitis',
-        'Tes Pendengaran',
-      ];
-    } else {
-      return ['Layanan tidak tersedia'];
-    }
+    _layanan = widget.poli.services;
   }
 
   @override
