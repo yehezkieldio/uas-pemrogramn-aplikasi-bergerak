@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'page/login_page.dart';
 
 void main() {
@@ -37,9 +38,44 @@ class KlinikSehatApp extends StatelessWidget {
     const backgroundColor = Color(0xFFF5F5F1); // Soft cream
     const textDark = Color(0xFF2D3436);
     const textLight = Color(0xFF636E72);
+    final baseTextTheme = GoogleFonts.poppinsTextTheme();
 
     return ThemeData(
       useMaterial3: true,
+
+      textTheme: baseTextTheme.copyWith(
+        headlineLarge: GoogleFonts.poppins(
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+          color: textDark,
+          letterSpacing: -0.5,
+        ),
+        headlineMedium: GoogleFonts.poppins(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: textDark,
+        ),
+        bodyLarge: GoogleFonts.poppins(
+          fontSize: 16,
+          color: textLight,
+          height: 1.6,
+        ),
+        bodyMedium: GoogleFonts.poppins(
+          fontSize: 14,
+          color: textLight,
+          height: 1.5,
+        ),
+        titleLarge: GoogleFonts.poppins(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: textDark,
+        ),
+        titleMedium: GoogleFonts.poppins(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: textDark,
+        ),
+      ),
 
       // Color scheme
       colorScheme: ColorScheme.fromSeed(
@@ -55,12 +91,12 @@ class KlinikSehatApp extends StatelessWidget {
       scaffoldBackgroundColor: backgroundColor,
 
       // AppBar theme
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        titleTextStyle: TextStyle(
+        titleTextStyle: GoogleFonts.poppins(
           fontSize: 18,
           fontWeight: FontWeight.bold,
           letterSpacing: -0.3,
@@ -125,34 +161,6 @@ class KlinikSehatApp extends StatelessWidget {
         contentTextStyle: const TextStyle(color: Colors.white, fontSize: 14),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      ),
-
-      // Text theme
-      textTheme: const TextTheme(
-        headlineLarge: TextStyle(
-          fontSize: 32,
-          fontWeight: FontWeight.bold,
-          color: textDark,
-          letterSpacing: -0.5,
-        ),
-        headlineMedium: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: textDark,
-          letterSpacing: -0.3,
-        ),
-        titleLarge: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: textDark,
-        ),
-        titleMedium: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-          color: textDark,
-        ),
-        bodyLarge: TextStyle(fontSize: 16, color: textLight, height: 1.6),
-        bodyMedium: TextStyle(fontSize: 14, color: textLight, height: 1.5),
       ),
 
       // Page transitions

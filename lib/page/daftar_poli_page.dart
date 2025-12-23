@@ -38,7 +38,11 @@ class _DaftarPoliPageState extends State<DaftarPoliPage>
         elevation: 0,
         title: const Text(
           'Daftar Poli Klinik',
-          style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: -0.3),
+          style: TextStyle(
+            fontWeight: FontWeight.w400,
+            letterSpacing: -0.3,
+            color: Colors.white,
+          ),
         ),
         centerTitle: true,
         leading: IconButton(

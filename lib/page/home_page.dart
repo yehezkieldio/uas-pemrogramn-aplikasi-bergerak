@@ -272,6 +272,11 @@ class _HomePageState extends State<HomePage>
                           ],
                         ),
                       ),
+
+                      const SizedBox(height: 32),
+
+                      // developer list
+                      _buildDeveloperList(),
                     ],
                   ),
                 ),
@@ -368,6 +373,76 @@ class _HomePageState extends State<HomePage>
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildPersonRow(String name) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: const Color(0xFFE8F5F3),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: const Icon(
+            Icons.person_2_rounded,
+            color: Color(0xFF1A7F7A),
+            size: 20,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          // Added Expanded to prevent text overflow if names are long
+          child: Text(
+            name,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors
+                  .grey
+                  .shade600, // Using a darker color for better readability
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDeveloperList() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Kelompok',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey,
+            ),
+          ),
+          const SizedBox(height: 16),
+          _buildPersonRow(
+            'Yehezkiel Dio Sinolungan (2311032)',
+          ), // Space between people
+          const SizedBox(height: 12),
+          _buildPersonRow('Ahmad Fauzan Fadhilah (2311045)'),
+          const SizedBox(height: 12),
+        ],
+      ),
     );
   }
 }

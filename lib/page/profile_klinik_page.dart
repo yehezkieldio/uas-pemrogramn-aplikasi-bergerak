@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileKlinikPage extends StatelessWidget {
   const ProfileKlinikPage({super.key});
@@ -12,7 +13,11 @@ class ProfileKlinikPage extends StatelessWidget {
         elevation: 0,
         title: const Text(
           'Profil Klinik',
-          style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: -0.3),
+          style: TextStyle(
+            fontWeight: FontWeight.w400,
+            letterSpacing: -0.3,
+            color: Colors.white,
+          ),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -257,7 +262,7 @@ class ProfileKlinikPage extends StatelessWidget {
                   children: [
                     _buildContactRow(
                       Icons.location_on_rounded,
-                      'Jl. Kesehatan No. 123, Jakarta Selatan',
+                      'Jl. Kesehatan No. 123, Balikpapan',
                     ),
                     const SizedBox(height: 16),
                     _buildContactRow(Icons.phone_rounded, '(021) 123-4567'),
@@ -277,8 +282,17 @@ class ProfileKlinikPage extends StatelessWidget {
       ),
       // FloatingActionButton
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          _showSnackBar(context, 'WhatsApp dibuka');
+        onPressed: () async {
+          const String youtubeUrl =
+              "https://youtu.be/G04XxfE-W-k?si=2Ndvf1mdavRK9Uk1";
+          final Uri uri = Uri.parse(youtubeUrl);
+
+          if (await canLaunchUrl(uri)) {
+            await launchUrl(uri, mode: LaunchMode.externalApplication);
+          } else {
+            // ignore: use_build_context_synchronously
+            _showSnackBar(context, 'Could not open the link');
+          }
         },
         backgroundColor: const Color(0xFF25D366),
         icon: const Icon(Icons.chat_rounded),

@@ -89,9 +89,10 @@ class _DaftarLayananPageState extends State<DaftarLayananPage>
         elevation: 0,
         title: Text(
           'Layanan ${widget.poli.name}',
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
+          style: TextStyle(
+            fontWeight: FontWeight.w400,
             letterSpacing: -0.3,
+            color: Colors.white,
           ),
         ),
         centerTitle: true,
