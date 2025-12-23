@@ -65,8 +65,8 @@ class _LoginPageState extends State<LoginPage>
         context,
         PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 600),
-          pageBuilder: (_, __, ___) => const HomePage(),
-          transitionsBuilder: (_, animation, __, child) {
+          pageBuilder: (_, _, _) => const HomePage(),
+          transitionsBuilder: (_, animation, _, child) {
             return FadeTransition(
               opacity: animation,
               child: SlideTransition(

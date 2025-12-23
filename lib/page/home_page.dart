@@ -180,9 +180,8 @@ class _HomePageState extends State<HomePage>
                               transitionDuration: const Duration(
                                 milliseconds: 400,
                               ),
-                              pageBuilder: (_, __, ___) =>
-                                  const DaftarPoliPage(),
-                              transitionsBuilder: (_, animation, __, child) {
+                              pageBuilder: (_, _, _) => const DaftarPoliPage(),
+                              transitionsBuilder: (_, animation, _, child) {
                                 return FadeTransition(
                                   opacity: animation,
                                   child: child,
@@ -207,9 +206,9 @@ class _HomePageState extends State<HomePage>
                               transitionDuration: const Duration(
                                 milliseconds: 400,
                               ),
-                              pageBuilder: (_, __, ___) =>
+                              pageBuilder: (_, _, _) =>
                                   const ProfileKlinikPage(),
-                              transitionsBuilder: (_, animation, __, child) {
+                              transitionsBuilder: (_, animation, _, child) {
                                 return FadeTransition(
                                   opacity: animation,
                                   child: child,

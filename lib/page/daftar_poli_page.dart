@@ -147,8 +147,8 @@ class _DaftarPoliPageState extends State<DaftarPoliPage>
           context,
           PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 400),
-            pageBuilder: (_, __, ___) => DaftarLayananPage(poli: poli),
-            transitionsBuilder: (_, animation, __, child) {
+            pageBuilder: (_, _, _) => DaftarLayananPage(poli: poli),
+            transitionsBuilder: (_, animation, _, child) {
               return FadeTransition(opacity: animation, child: child);
             },
           ),
@@ -160,8 +160,8 @@ class _DaftarPoliPageState extends State<DaftarPoliPage>
           context,
           PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 400),
-            pageBuilder: (_, __, ___) => DetailPoliPage(poli: poli),
-            transitionsBuilder: (_, animation, __, child) {
+            pageBuilder: (_, _, _) => DetailPoliPage(poli: poli),
+            transitionsBuilder: (_, animation, _, child) {
               return FadeTransition(opacity: animation, child: child);
             },
           ),
@@ -189,8 +189,8 @@ class _DaftarPoliPageState extends State<DaftarPoliPage>
                 context,
                 PageRouteBuilder(
                   transitionDuration: const Duration(milliseconds: 400),
-                  pageBuilder: (_, __, ___) => DaftarLayananPage(poli: poli),
-                  transitionsBuilder: (_, animation, __, child) {
+                  pageBuilder: (_, _, _) => DaftarLayananPage(poli: poli),
+                  transitionsBuilder: (_, animation, _, child) {
                     return FadeTransition(opacity: animation, child: child);
                   },
                 ),
@@ -201,8 +201,8 @@ class _DaftarPoliPageState extends State<DaftarPoliPage>
                 context,
                 PageRouteBuilder(
                   transitionDuration: const Duration(milliseconds: 400),
-                  pageBuilder: (_, __, ___) => DetailPoliPage(poli: poli),
-                  transitionsBuilder: (_, animation, __, child) {
+                  pageBuilder: (_, _, _) => DetailPoliPage(poli: poli),
+                  transitionsBuilder: (_, animation, _, child) {
                     return FadeTransition(opacity: animation, child: child);
                   },
                 ),
