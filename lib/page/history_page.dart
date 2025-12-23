@@ -58,9 +58,15 @@ class _HistoryPageState extends State<HistoryPage>
           controller: _tabController,
           indicatorColor: Colors.white,
           indicatorWeight: 3,
-          labelStyle:
-              const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w400),
+          labelStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            color: Colors.white,
+          ),
+          unselectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.w400,
+            color: Colors.white,
+          ),
           tabs: const [
             Tab(text: 'Mendatang'),
             Tab(text: 'Selesai'),
@@ -75,10 +81,7 @@ class _HistoryPageState extends State<HistoryPage>
 
           return TabBarView(
             controller: _tabController,
-            children: [
-              _buildBookingList(upcoming),
-              _buildBookingList(past),
-            ],
+            children: [_buildBookingList(upcoming), _buildBookingList(past)],
           );
         },
       ),
@@ -183,8 +186,10 @@ class _HistoryPageState extends State<HistoryPage>
                 ),
                 // Queue Number Badge
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFE8F5F3),
                     borderRadius: BorderRadius.circular(12),
@@ -227,7 +232,9 @@ class _HistoryPageState extends State<HistoryPage>
                     Text(
                       DateFormat('EEEE, d MMM').format(booking.date),
                       style: const TextStyle(
-                          fontSize: 13, fontWeight: FontWeight.w500),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
@@ -242,7 +249,9 @@ class _HistoryPageState extends State<HistoryPage>
                     Text(
                       booking.time,
                       style: const TextStyle(
-                          fontSize: 13, fontWeight: FontWeight.w500),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),

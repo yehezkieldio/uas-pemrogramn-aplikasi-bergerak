@@ -6,6 +6,8 @@ class Poli {
   final IconData icon;
   final String description;
   final List<String> services;
+  final String location;
+  final String operatingHours;
 
   const Poli({
     required this.id,
@@ -13,6 +15,8 @@ class Poli {
     required this.icon,
     required this.description,
     required this.services,
+    required this.location,
+    required this.operatingHours,
   });
 }
 
@@ -30,6 +34,8 @@ final List<Poli> daftarPoli = [
       'Cek Gula Darah',
       'Surat Keterangan Sehat',
     ],
+    location: 'Lantai 1, Ruang 101-103',
+    operatingHours: '08:00 - 20:00',
   ),
   const Poli(
     id: 2,
@@ -44,6 +50,8 @@ final List<Poli> daftarPoli = [
       'Perawatan Saluran Akar',
       'Pemutihan Gigi',
     ],
+    location: 'Lantai 2, Ruang 201-205',
+    operatingHours: '09:00 - 17:00',
   ),
   const Poli(
     id: 3,
@@ -58,6 +66,8 @@ final List<Poli> daftarPoli = [
       'Penanganan Demam',
       'Konsultasi Gizi Anak',
     ],
+    location: 'Lantai 1, Sayap Timur',
+    operatingHours: '08:00 - 16:00',
   ),
   const Poli(
     id: 4,
@@ -72,6 +82,8 @@ final List<Poli> daftarPoli = [
       'Konsultasi Kacamata',
       'Pemeriksaan Katarak',
     ],
+    location: 'Lantai 3, Ruang 305',
+    operatingHours: '10:00 - 18:00',
   ),
   const Poli(
     id: 5,
@@ -86,5 +98,22 @@ final List<Poli> daftarPoli = [
       'Penanganan Sinusitis',
       'Tes Pendengaran',
     ],
+    location: 'Lantai 3, Ruang 308',
+    operatingHours: '13:00 - 19:00',
+  ),
+  const Poli(
+    id: 6,
+    name: 'Poli Kandungan',
+    icon: Icons.pregnant_woman_rounded,
+    description:
+        'Layanan kesehatan ibu dan janin yang komprehensif, mulai dari pemeriksaan kehamilan rutin hingga konsultasi kesuburan.',
+    services: [
+      'USG 4D',
+      'Pemeriksaan Kehamilan',
+      'Konsultasi Kesuburan',
+      'Imunisasi Ibu Hamil',
+    ],
+    location: 'Lantai 2, Sayap Barat',
+    operatingHours: '09:00 - 15:00',
   ),
 ];

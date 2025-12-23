@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../model/poli.dart';
+import '../model/doctor.dart';
+import 'doctor_detail_page.dart';
 
 class DetailPoliPage extends StatelessWidget {
   final Poli poli;
@@ -8,6 +10,10 @@ class DetailPoliPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Filter doctors by this poli
+    final doctors =
+        daftarDokter.where((d) => d.specialty == poli.name).toList();
+
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F1),
       body: CustomScrollView(
@@ -138,6 +144,29 @@ class DetailPoliPage extends StatelessWidget {
                     children: [
                       const SizedBox(height: 10),
 
+                      // Info Row (Location & Hours)
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildInfoCard(
+                              Icons.location_on_rounded,
+                              'Lokasi',
+                              poli.location,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: _buildInfoCard(
+                              Icons.access_time_rounded,
+                              'Jam Buka',
+                              poli.operatingHours,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 24),
+
                       // Description card
                       Container(
                         padding: const EdgeInsets.all(20),
@@ -192,7 +221,44 @@ class DetailPoliPage extends StatelessWidget {
                         ),
                       ),
 
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 24),
+
+                      // Available Doctors (Horizontal List)
+                      if (doctors.isNotEmpty) ...[
+                        Row(
+                          children: [
+                            Container(
+                              width: 4,
+                              height: 24,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF1A7F7A),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              'Dokter Kami',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade800,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          height: 160,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: doctors.length,
+                            itemBuilder: (context, index) {
+                              return _buildDoctorCard(context, doctors[index]);
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                      ],
 
                       // Services preview
                       Container(
@@ -265,120 +331,6 @@ class DetailPoliPage extends StatelessWidget {
                       ),
 
                       const SizedBox(height: 32),
-
-                      // Action buttons - Daftar and Kembali
-                      Row(
-                        children: [
-                          // Kembali button
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () => Navigator.pop(context),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 16,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                    color: const Color(0xFF1A7F7A),
-                                    width: 2,
-                                  ),
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    'Kembali',
-                                    style: TextStyle(
-                                      color: Color(0xFF1A7F7A),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          // Daftar button
-                          Expanded(
-                            flex: 2,
-                            child: GestureDetector(
-                              onTap: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.check_circle,
-                                          color: Colors.white,
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Text(
-                                          'Pendaftaran ${poli.name} berhasil!',
-                                        ),
-                                      ],
-                                    ),
-                                    backgroundColor: const Color(0xFF1A7F7A),
-                                    behavior: SnackBarBehavior.floating,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    margin: const EdgeInsets.all(16),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 16,
-                                ),
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      Color(0xFF1A7F7A),
-                                      Color(0xFF26A69A),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(
-                                        0xFF1A7F7A,
-                                      ).withOpacity(0.4),
-                                      blurRadius: 15,
-                                      offset: const Offset(0, 8),
-                                    ),
-                                  ],
-                                ),
-                                child: const Center(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.assignment_turned_in_rounded,
-                                        color: Colors.white,
-                                        size: 20,
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        'Daftar Sekarang',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 40),
                     ],
                   ),
                 ),
@@ -386,6 +338,129 @@ class DetailPoliPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildInfoCard(IconData icon, String title, String value) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: const Color(0xFF1A7F7A), size: 24),
+          const SizedBox(height: 8),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey.shade500,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF2D3436),
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDoctorCard(BuildContext context, Doctor doctor) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 400),
+            pageBuilder: (_, _, _) => DoctorDetailPage(doctor: doctor),
+            transitionsBuilder: (_, animation, _, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          ),
+        );
+      },
+      child: Container(
+        width: 140,
+        margin: const EdgeInsets.only(right: 16),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF0F4F4),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.person_rounded,
+                color: Color(0xFFCFD8DC),
+                size: 32,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              doctor.name,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF2D3436),
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 4),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.star_rounded,
+                  size: 14,
+                  color: Color(0xFFFBC02D),
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  doctor.rating.toString(),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFFBC02D),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
