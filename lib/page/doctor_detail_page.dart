@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../model/doctor.dart';
+import 'booking_page.dart';
 
 class DoctorDetailPage extends StatelessWidget {
   final Doctor doctor;
@@ -220,15 +221,11 @@ class DoctorDetailPage extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: const Text(
-                                  'Fitur Booking akan segera tersedia!'),
-                              backgroundColor: const Color(0xFF1A7F7A),
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  BookingPage(doctor: doctor),
                             ),
                           );
                         },

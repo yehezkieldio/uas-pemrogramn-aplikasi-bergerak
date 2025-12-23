@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'daftar_poli_page.dart';
 import 'doctor_list_page.dart';
+import 'history_page.dart';
 import 'profile_klinik_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -208,6 +209,32 @@ class _HomePageState extends State<HomePage>
                                 milliseconds: 400,
                               ),
                               pageBuilder: (_, _, _) => const DoctorListPage(),
+                              transitionsBuilder: (_, animation, _, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      _buildMenuCard(
+                        icon: Icons.history_rounded,
+                        title: 'Riwayat Janji',
+                        subtitle: 'Lihat jadwal konsultasi Anda',
+                        gradient: const [Color(0xFF4DB6AC), Color(0xFF00897B)],
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              transitionDuration: const Duration(
+                                milliseconds: 400,
+                              ),
+                              pageBuilder: (_, _, _) => const HistoryPage(),
                               transitionsBuilder: (_, animation, _, child) {
                                 return FadeTransition(
                                   opacity: animation,
