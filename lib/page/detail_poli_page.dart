@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../model/poli.dart';
 import '../model/doctor.dart';
 import 'doctor_detail_page.dart';
+import 'detail_layanan_page.dart';
 
 class DetailPoliPage extends StatelessWidget {
   final Poli poli;
@@ -11,8 +12,9 @@ class DetailPoliPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Filter doctors by this poli
-    final doctors =
-        daftarDokter.where((d) => d.specialty == poli.name).toList();
+    final doctors = daftarDokter
+        .where((d) => d.specialty == poli.name)
+        .toList();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F1),
@@ -306,21 +308,34 @@ class DetailPoliPage extends StatelessWidget {
                               spacing: 8,
                               runSpacing: 8,
                               children: poli.services.map((service) {
-                                return Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 8,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFE8F5F3),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Text(
-                                    service,
-                                    style: const TextStyle(
-                                      fontSize: 13,
-                                      color: Color(0xFF1A7F7A),
-                                      fontWeight: FontWeight.w500,
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => DetailLayananPage(
+                                          service: service,
+                                          poliName: poli.name,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFE8F5F3),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      service.name,
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        color: Color(0xFF1A7F7A),
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
                                 );
@@ -363,10 +378,7 @@ class DetailPoliPage extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             title,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey.shade500,
-            ),
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
           ),
           const SizedBox(height: 4),
           Text(

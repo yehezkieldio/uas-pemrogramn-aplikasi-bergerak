@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../model/poli.dart';
+import 'detail_layanan_page.dart';
 
 class DaftarLayananPage extends StatefulWidget {
   final Poli poli;
@@ -13,7 +14,7 @@ class DaftarLayananPage extends StatefulWidget {
 class _DaftarLayananPageState extends State<DaftarLayananPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animController;
-  late List<String> _layanan;
+  late List<ClinicService> _layanan;
 
   @override
   void initState() {
@@ -41,7 +42,7 @@ class _DaftarLayananPageState extends State<DaftarLayananPage>
         elevation: 0,
         title: Text(
           'Layanan ${widget.poli.name}',
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.w400,
             letterSpacing: -0.3,
             color: Colors.white,
@@ -156,7 +157,7 @@ class _DaftarLayananPageState extends State<DaftarLayananPage>
     );
   }
 
-  Widget _buildLayananCard(String layanan, int index) {
+  Widget _buildLayananCard(ClinicService layanan, int index) {
     final colors = [
       const Color(0xFF1A7F7A),
       const Color(0xFF5C6BC0),
@@ -184,15 +185,17 @@ class _DaftarLayananPageState extends State<DaftarLayananPage>
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Layanan: $layanan'),
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                transitionDuration: const Duration(milliseconds: 400),
+                pageBuilder: (_, _, _) => DetailLayananPage(
+                  service: layanan,
+                  poliName: widget.poli.name,
                 ),
-                backgroundColor: const Color(0xFF1A7F7A),
-                margin: const EdgeInsets.all(16),
+                transitionsBuilder: (_, animation, _, child) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
               ),
             );
           },
@@ -222,13 +225,26 @@ class _DaftarLayananPageState extends State<DaftarLayananPage>
                 const SizedBox(width: 16),
                 // Layanan name
                 Expanded(
-                  child: Text(
-                    layanan,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey.shade800,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        layanan.name,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey.shade800,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        layanan.priceRange,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 // Trailing icon
