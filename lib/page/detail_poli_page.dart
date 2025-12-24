@@ -50,6 +50,7 @@ class DetailPoliPage extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () => Navigator.pop(context),
                     child: Container(
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(12),
@@ -239,7 +240,7 @@ class DetailPoliPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       SizedBox(
-                        height: 180, // Increased height for better fit
+                        height: 200, // Increased height to prevent overflow
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           physics: const BouncingScrollPhysics(),

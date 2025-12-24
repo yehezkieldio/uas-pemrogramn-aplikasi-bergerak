@@ -61,12 +61,23 @@ class _DaftarPoliPageState extends State<DaftarPoliPage>
                 pinned: true,
                 backgroundColor: DesignSystem.primary,
                 elevation: 0,
-                leading: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: Colors.white,
+                leading: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                  onPressed: () => Navigator.pop(context),
                 ),
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
@@ -193,19 +204,19 @@ class _DaftarPoliPageState extends State<DaftarPoliPage>
   Widget _buildOrganicPoliCard(BuildContext context, Poli poli) {
     return GlassCard(
       padding: EdgeInsets.zero,
-      onTap: () {
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            transitionDuration: const Duration(milliseconds: 500),
-            pageBuilder: (_, _, _) => DaftarLayananPage(poli: poli),
-            transitionsBuilder: (_, animation, _, child) {
-              return FadeTransition(opacity: animation, child: child);
-            },
-          ),
-        );
-      },
       child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              transitionDuration: const Duration(milliseconds: 500),
+              pageBuilder: (_, _, _) => DaftarLayananPage(poli: poli),
+              transitionsBuilder: (_, animation, _, child) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+            ),
+          );
+        },
         onLongPress: () {
           Navigator.push(
             context,

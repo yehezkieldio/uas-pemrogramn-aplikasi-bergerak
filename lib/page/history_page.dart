@@ -58,24 +58,24 @@ class _HistoryPageState extends State<HistoryPage>
                   pinned: true,
                   backgroundColor: DesignSystem.primary,
                   elevation: 0,
-                  leading: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          size: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  centerTitle: true,
+                                  leading: Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: GestureDetector(
+                                      onTap: () => Navigator.pop(context),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.2),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        child: const Icon(
+                                          Icons.arrow_back_ios_new_rounded,
+                                          size: 18,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),                  centerTitle: true,
                   title: Text(
                     'Riwayat Janji',
                     style: DesignSystem.titleLarge.copyWith(

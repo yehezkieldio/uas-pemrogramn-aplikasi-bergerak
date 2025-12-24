@@ -67,8 +67,9 @@ class _DaftarLayananPageState extends State<DaftarLayananPage>
                 elevation: 0,
                 leading: Padding(
                   padding: const EdgeInsets.all(8),
-                  child: IconButton(
-                    icon: Container(
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.2),
@@ -80,7 +81,6 @@ class _DaftarLayananPageState extends State<DaftarLayananPage>
                         color: Colors.white,
                       ),
                     ),
-                    onPressed: () => Navigator.pop(context),
                   ),
                 ),
                 flexibleSpace: FlexibleSpaceBar(
