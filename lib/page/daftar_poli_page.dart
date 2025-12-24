@@ -38,9 +38,9 @@ class _DaftarPoliPageState extends State<DaftarPoliPage>
       body: Stack(
         children: [
           // Gradient Background
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
+          const Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -178,12 +178,11 @@ class _DaftarPoliPageState extends State<DaftarPoliPage>
                     return AnimatedBuilder(
                       animation: animation,
                       builder: (context, child) {
+                        // Clamp value to prevent offset exceptions
+                        final value = animation.value.clamp(0.0, 1.0);
                         return Transform.translate(
-                          offset: Offset(0, 30 * (1 - animation.value)),
-                          child: Opacity(
-                            opacity: animation.value,
-                            child: child,
-                          ),
+                          offset: Offset(0, 30 * (1 - value)),
+                          child: Opacity(opacity: value, child: child),
                         );
                       },
                       child: Padding(
@@ -224,22 +223,24 @@ class _DaftarPoliPageState extends State<DaftarPoliPage>
               // Liquid Icon Container
               Hero(
                 tag: 'poli-icon-${poli.id}',
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    gradient: DesignSystem.primaryGradient,
-                    borderRadius: BorderRadius.circular(
-                      DesignSystem.radiusMedium,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: DesignSystem.primary.withOpacity(0.3),
-                        blurRadius: 12,
-                        offset: const Offset(0, 6),
+                child: RepaintBoundary(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      gradient: DesignSystem.primaryGradient,
+                      borderRadius: BorderRadius.circular(
+                        DesignSystem.radiusMedium,
                       ),
-                    ],
+                      boxShadow: [
+                        BoxShadow(
+                          color: DesignSystem.primary.withOpacity(0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                    child: Icon(poli.icon, color: Colors.white, size: 28),
                   ),
-                  child: Icon(poli.icon, color: Colors.white, size: 28),
                 ),
               ),
               const SizedBox(width: 20),

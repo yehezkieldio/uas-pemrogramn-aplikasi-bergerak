@@ -23,9 +23,9 @@ class DetailPoliPage extends StatelessWidget {
       body: Stack(
         children: [
           // Background Gradient
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
+          const Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -109,23 +109,25 @@ class DetailPoliPage extends StatelessWidget {
                             // Hero icon container
                             Hero(
                               tag: 'poli-icon-${poli.id}',
-                              child: Container(
-                                padding: const EdgeInsets.all(28),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.15),
-                                      blurRadius: 30,
-                                      offset: const Offset(0, 15),
-                                    ),
-                                  ],
-                                ),
-                                child: Icon(
-                                  poli.icon,
-                                  size: 56,
-                                  color: DesignSystem.primary,
+                              child: RepaintBoundary(
+                                child: Container(
+                                  padding: const EdgeInsets.all(28),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.15),
+                                        blurRadius: 30,
+                                        offset: const Offset(0, 15),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    poli.icon,
+                                    size: 56,
+                                    color: DesignSystem.primary,
+                                  ),
                                 ),
                               ),
                             ),
@@ -245,8 +247,12 @@ class DetailPoliPage extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           physics: const BouncingScrollPhysics(),
                           itemCount: doctors.length,
+                          cacheExtent: 100, // Preload offscreen items
                           itemBuilder: (context, index) {
-                            return _buildDoctorCard(context, doctors[index]);
+                            return RepaintBoundary(
+                              key: ValueKey(doctors[index].id),
+                              child: _buildDoctorCard(context, doctors[index]),
+                            );
                           },
                         ),
                       ),

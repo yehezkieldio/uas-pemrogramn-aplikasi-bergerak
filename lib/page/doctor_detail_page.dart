@@ -17,9 +17,9 @@ class DoctorDetailPage extends StatelessWidget {
       body: Stack(
         children: [
           // Background Gradient
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
+          const Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,

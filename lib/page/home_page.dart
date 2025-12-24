@@ -59,9 +59,9 @@ class _HomePageState extends State<HomePage>
       body: Stack(
         children: [
           // Background Gradient
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
+          const Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -359,51 +359,53 @@ class _HomePageState extends State<HomePage>
     required Color color,
     required Widget page,
   }) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context, DesignSystem.createRoute(page));
-      },
-      child: Container(
-        height: 140,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(DesignSystem.radiusLarge),
-          boxShadow: [
-            BoxShadow(
-              color: color.withOpacity(0.15),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                shape: BoxShape.circle,
+    return RepaintBoundary(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(context, DesignSystem.createRoute(page));
+        },
+        child: Container(
+          height: 140,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(DesignSystem.radiusLarge),
+            boxShadow: [
+              BoxShadow(
+                color: color.withOpacity(0.15),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
               ),
-              child: Icon(icon, color: color, size: 28),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: DesignSystem.titleMedium.copyWith(fontSize: 16),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.1),
+                  shape: BoxShape.circle,
                 ),
-                Icon(
-                  Icons.arrow_forward_rounded,
-                  color: DesignSystem.textGrey.withOpacity(0.5),
-                  size: 20,
-                ),
-              ],
-            ),
-          ],
+                child: Icon(icon, color: color, size: 28),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    title,
+                    style: DesignSystem.titleMedium.copyWith(fontSize: 16),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_rounded,
+                    color: DesignSystem.textGrey.withOpacity(0.5),
+                    size: 20,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

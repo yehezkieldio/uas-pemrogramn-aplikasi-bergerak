@@ -38,9 +38,9 @@ class _BookingPageState extends State<BookingPage> {
       body: Stack(
         children: [
           // Background Gradient
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
+          const Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -171,61 +171,63 @@ class _BookingPageState extends State<BookingPage> {
                                 date.month == _selectedDate.month &&
                                 date.year == _selectedDate.year;
 
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _selectedDate = date;
-                                });
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.only(right: 12),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 16,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? DesignSystem.primary
-                                      : Colors.white.withOpacity(0.6),
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                    color: isSelected
-                                        ? Colors.transparent
-                                        : Colors.white.withOpacity(0.4),
+                            return RepaintBoundary(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _selectedDate = date;
+                                  });
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(right: 12),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 16,
                                   ),
-                                  boxShadow: isSelected
-                                      ? [
-                                          BoxShadow(
-                                            color: DesignSystem.primary
-                                                .withOpacity(0.3),
-                                            blurRadius: 10,
-                                            offset: const Offset(0, 5),
-                                          ),
-                                        ]
-                                      : null,
-                                ),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      DateFormat('EEE').format(date),
-                                      style: DesignSystem.bodyMedium.copyWith(
-                                        fontSize: 14,
-                                        color: isSelected
-                                            ? Colors.white.withOpacity(0.9)
-                                            : DesignSystem.textGrey,
-                                      ),
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? DesignSystem.primary
+                                        : Colors.white.withOpacity(0.6),
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                      color: isSelected
+                                          ? Colors.transparent
+                                          : Colors.white.withOpacity(0.4),
                                     ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      DateFormat('d').format(date),
-                                      style: DesignSystem.titleLarge.copyWith(
-                                        fontSize: 20,
-                                        color: isSelected
-                                            ? Colors.white
-                                            : DesignSystem.textDark,
+                                    boxShadow: isSelected
+                                        ? [
+                                            BoxShadow(
+                                              color: DesignSystem.primary
+                                                  .withOpacity(0.3),
+                                              blurRadius: 10,
+                                              offset: const Offset(0, 5),
+                                            ),
+                                          ]
+                                        : null,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        DateFormat('EEE').format(date),
+                                        style: DesignSystem.bodyMedium.copyWith(
+                                          fontSize: 14,
+                                          color: isSelected
+                                              ? Colors.white.withOpacity(0.9)
+                                              : DesignSystem.textGrey,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        DateFormat('d').format(date),
+                                        style: DesignSystem.titleLarge.copyWith(
+                                          fontSize: 20,
+                                          color: isSelected
+                                              ? Colors.white
+                                              : DesignSystem.textDark,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
@@ -255,44 +257,46 @@ class _BookingPageState extends State<BookingPage> {
                         itemBuilder: (context, index) {
                           final time = _timeSlots[index];
                           final isSelected = _selectedTime == time;
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedTime = time;
-                              });
-                            },
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 200),
-                              curve: DesignSystem.curveOrganic,
-                              decoration: BoxDecoration(
-                                color: isSelected
-                                    ? DesignSystem.primary
-                                    : Colors.white.withOpacity(0.6),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
+                          return RepaintBoundary(
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _selectedTime = time;
+                                });
+                              },
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 200),
+                                curve: DesignSystem.curveOrganic,
+                                decoration: BoxDecoration(
                                   color: isSelected
-                                      ? Colors.transparent
-                                      : Colors.white.withOpacity(0.4),
-                                ),
-                                boxShadow: isSelected
-                                    ? [
-                                        BoxShadow(
-                                          color: DesignSystem.primary
-                                              .withOpacity(0.3),
-                                          blurRadius: 8,
-                                          offset: const Offset(0, 4),
-                                        ),
-                                      ]
-                                    : null,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  time,
-                                  style: DesignSystem.bodyMedium.copyWith(
-                                    fontWeight: FontWeight.bold,
+                                      ? DesignSystem.primary
+                                      : Colors.white.withOpacity(0.6),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
                                     color: isSelected
-                                        ? Colors.white
-                                        : DesignSystem.textDark,
+                                        ? Colors.transparent
+                                        : Colors.white.withOpacity(0.4),
+                                  ),
+                                  boxShadow: isSelected
+                                      ? [
+                                          BoxShadow(
+                                            color: DesignSystem.primary
+                                                .withOpacity(0.3),
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 4),
+                                          ),
+                                        ]
+                                      : null,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    time,
+                                    style: DesignSystem.bodyMedium.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: isSelected
+                                          ? Colors.white
+                                          : DesignSystem.textDark,
+                                    ),
                                   ),
                                 ),
                               ),

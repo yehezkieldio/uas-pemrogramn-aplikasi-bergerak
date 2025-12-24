@@ -62,11 +62,13 @@ class _LiquidBackgroundState extends State<LiquidBackground>
               builder: (context, child) {
                 return CustomPaint(
                   painter: _OrganicBlobPainter(
-                    animationValue: _blobAnimation.value,
+                    animationValue: _blobAnimation.value.clamp(0.0, 1.0),
                     primaryColor: DesignSystem.primary,
                     secondaryColor: DesignSystem.secondary,
                   ),
                   size: Size.infinite,
+                  isComplex: true, // Hint for better caching
+                  willChange: false, // Static composition
                 );
               },
             ),

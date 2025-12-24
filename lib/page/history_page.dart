@@ -36,9 +36,9 @@ class _HistoryPageState extends State<HistoryPage>
       body: Stack(
         children: [
           // Background Gradient
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
+          const Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -58,24 +58,25 @@ class _HistoryPageState extends State<HistoryPage>
                   pinned: true,
                   backgroundColor: DesignSystem.primary,
                   elevation: 0,
-                                  leading: Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: GestureDetector(
-                                      onTap: () => Navigator.pop(context),
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white.withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        child: const Icon(
-                                          Icons.arrow_back_ios_new_rounded,
-                                          size: 18,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),                  centerTitle: true,
+                  leading: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          size: 18,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  centerTitle: true,
                   title: Text(
                     'Riwayat Janji',
                     style: DesignSystem.titleLarge.copyWith(
@@ -170,9 +171,12 @@ class _HistoryPageState extends State<HistoryPage>
         final booking = bookings[index];
         final doctor = daftarDokter.firstWhere((d) => d.id == booking.doctorId);
 
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 16),
-          child: _buildOrganicBookingCard(booking, doctor),
+        return RepaintBoundary(
+          key: ValueKey(booking.id),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: _buildOrganicBookingCard(booking, doctor),
+          ),
         );
       },
     );

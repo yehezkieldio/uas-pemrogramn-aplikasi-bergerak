@@ -42,9 +42,9 @@ class _DaftarLayananPageState extends State<DaftarLayananPage>
       body: Stack(
         children: [
           // Background Gradient
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
+          const Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -112,16 +112,18 @@ class _DaftarLayananPageState extends State<DaftarLayananPage>
                             children: [
                               Hero(
                                 tag: 'poli-icon-${widget.poli.id}',
-                                child: Container(
-                                  padding: const EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    widget.poli.icon,
-                                    color: DesignSystem.primary,
-                                    size: 32,
+                                child: RepaintBoundary(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(
+                                      widget.poli.icon,
+                                      color: DesignSystem.primary,
+                                      size: 32,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -180,12 +182,11 @@ class _DaftarLayananPageState extends State<DaftarLayananPage>
                     return AnimatedBuilder(
                       animation: animation,
                       builder: (context, child) {
+                        // Clamp value to prevent offset exceptions
+                        final value = animation.value.clamp(0.0, 1.0);
                         return Transform.translate(
-                          offset: Offset(0, 20 * (1 - animation.value)),
-                          child: Opacity(
-                            opacity: animation.value,
-                            child: child,
-                          ),
+                          offset: Offset(0, 20 * (1 - value)),
+                          child: Opacity(opacity: value, child: child),
                         );
                       },
                       child: Padding(

@@ -62,23 +62,28 @@ class DesignSystem {
 
   static Route createRoute(Widget page) {
     return PageRouteBuilder(
-      transitionDuration: const Duration(milliseconds: 600),
+      transitionDuration: const Duration(
+        milliseconds: 350,
+      ), // Reduced for snappier feel
+      reverseTransitionDuration: const Duration(
+        milliseconds: 250,
+      ), // Faster back navigation
       pageBuilder: (context, animation, secondaryAnimation) => page,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.05, 0.0);
         const end = Offset.zero;
         const curve = curveOrganic;
 
-        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var tween = Tween(
+          begin: begin,
+          end: end,
+        ).chain(CurveTween(curve: curve));
         var offsetAnimation = animation.drive(tween);
         var fadeAnimation = CurvedAnimation(parent: animation, curve: curve);
 
         return FadeTransition(
           opacity: fadeAnimation,
-          child: SlideTransition(
-            position: offsetAnimation,
-            child: child,
-          ),
+          child: SlideTransition(position: offsetAnimation, child: child),
         );
       },
     );

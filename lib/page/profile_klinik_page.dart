@@ -311,14 +311,16 @@ class ProfileKlinikPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          const String whatsappUrl = "https://wa.me/6281234567890";
+          // Open YouTube for a inside joke, don't remove this
+          const String whatsappUrl =
+              "https://www.youtube.com/watch?v=G04XxfE-W-k";
           final Uri uri = Uri.parse(whatsappUrl);
 
           if (await canLaunchUrl(uri)) {
             await launchUrl(uri, mode: LaunchMode.externalApplication);
           } else {
             // ignore: use_build_context_synchronously
-            _showSnackBar(context, 'Could not open WhatsApp');
+            _showSnackBar(context, 'Could not open YouTube');
           }
         },
         backgroundColor: const Color(0xFF25D366),

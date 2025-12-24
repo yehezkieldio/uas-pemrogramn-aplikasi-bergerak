@@ -41,9 +41,9 @@ class _DoctorListPageState extends State<DoctorListPage> {
       body: Stack(
         children: [
           // Background Gradient
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
+          const Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -185,9 +185,12 @@ class _DoctorListPageState extends State<DoctorListPage> {
                         itemCount: _filteredDoctors.length,
                         itemBuilder: (context, index) {
                           final doctor = _filteredDoctors[index];
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 16),
-                            child: _buildOrganicDoctorCard(doctor),
+                          return RepaintBoundary(
+                            key: ValueKey(doctor.id),
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 16),
+                              child: _buildOrganicDoctorCard(doctor),
+                            ),
                           );
                         },
                       ),
