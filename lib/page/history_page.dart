@@ -185,6 +185,7 @@ class _HistoryPageState extends State<HistoryPage>
   Widget _buildOrganicBookingCard(Booking booking, Doctor doctor) {
     return GlassCard(
       padding: EdgeInsets.zero, // Custom padding inside
+      blurEnabled: false, // Disabled in list for performance
       child: Column(
         children: [
           Padding(

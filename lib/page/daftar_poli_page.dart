@@ -185,9 +185,12 @@ class _DaftarPoliPageState extends State<DaftarPoliPage>
                           child: Opacity(opacity: value, child: child),
                         );
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: _buildOrganicPoliCard(context, poli),
+                      child: RepaintBoundary(
+                        key: ValueKey(poli.id),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: _buildOrganicPoliCard(context, poli),
+                        ),
                       ),
                     );
                   }, childCount: daftarPoli.length),
@@ -203,6 +206,7 @@ class _DaftarPoliPageState extends State<DaftarPoliPage>
   Widget _buildOrganicPoliCard(BuildContext context, Poli poli) {
     return GlassCard(
       padding: EdgeInsets.zero,
+      blurEnabled: false, // Disabled in list for performance
       child: InkWell(
         onTap: () {
           Navigator.push(

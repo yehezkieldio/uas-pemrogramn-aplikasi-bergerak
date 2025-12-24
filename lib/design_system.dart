@@ -22,6 +22,13 @@ class DesignSystem {
     end: Alignment.bottomRight,
   );
 
+  /// Solid card gradient for performant list items (no blur)
+  static LinearGradient solidCardGradient = LinearGradient(
+    colors: [Colors.white.withOpacity(0.98), Colors.white.withOpacity(0.95)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
   static const Duration durationNormal = Duration(milliseconds: 400);
   static const Duration durationSlow = Duration(milliseconds: 800);
 

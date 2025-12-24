@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../model/doctor.dart';
 import '../model/poli.dart';
@@ -17,8 +18,40 @@ class _DoctorListPageState extends State<DoctorListPage> {
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
 
-  List<Doctor> get _filteredDoctors {
-    return daftarDokter.where((doctor) {
+  // Debounce timer for search optimization
+  Timer? _debounceTimer;
+
+  // Cached filtered results to avoid recomputation during build
+  List<Doctor> _cachedFilteredDoctors = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _updateFilteredDoctors();
+  }
+
+  /// Updates filtered doctors with debouncing for search queries
+  void _onSearchChanged(String value) {
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 300), () {
+      setState(() {
+        _searchQuery = value;
+        _updateFilteredDoctors();
+      });
+    });
+  }
+
+  /// Called when filter chip is selected (no debounce needed)
+  void _onPoliFilterChanged(String poli) {
+    setState(() {
+      _selectedPoli = poli;
+      _updateFilteredDoctors();
+    });
+  }
+
+  /// Recomputes filtered doctor list
+  void _updateFilteredDoctors() {
+    _cachedFilteredDoctors = daftarDokter.where((doctor) {
       final matchesPoli =
           _selectedPoli == 'Semua' || doctor.specialty == _selectedPoli;
       final matchesSearch = doctor.name.toLowerCase().contains(
@@ -30,6 +63,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
 
   @override
   void dispose() {
+    _debounceTimer?.cancel();
     _searchController.dispose();
     super.dispose();
   }
@@ -127,11 +161,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
                         style: DesignSystem.bodyMedium.copyWith(
                           color: DesignSystem.textDark,
                         ),
-                        onChanged: (value) {
-                          setState(() {
-                            _searchQuery = value;
-                          });
-                        },
+                        onChanged: _onSearchChanged,
                         decoration: InputDecoration(
                           hintText: 'Cari nama dokter...',
                           hintStyle: DesignSystem.bodyMedium.copyWith(
@@ -148,9 +178,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
                                   color: DesignSystem.textGrey,
                                   onPressed: () {
                                     _searchController.clear();
-                                    setState(() {
-                                      _searchQuery = '';
-                                    });
+                                    _onSearchChanged('');
                                   },
                                 )
                               : null,
@@ -177,14 +205,14 @@ class _DoctorListPageState extends State<DoctorListPage> {
 
               // Doctor List
               Expanded(
-                child: _filteredDoctors.isEmpty
+                child: _cachedFilteredDoctors.isEmpty
                     ? _buildEmptyState()
                     : ListView.builder(
                         padding: const EdgeInsets.all(24),
                         physics: const BouncingScrollPhysics(),
-                        itemCount: _filteredDoctors.length,
+                        itemCount: _cachedFilteredDoctors.length,
                         itemBuilder: (context, index) {
-                          final doctor = _filteredDoctors[index];
+                          final doctor = _cachedFilteredDoctors[index];
                           return RepaintBoundary(
                             key: ValueKey(doctor.id),
                             child: Padding(
@@ -205,11 +233,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
   Widget _buildOrganicFilterChip(String label) {
     final isSelected = _selectedPoli == label;
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedPoli = label;
-        });
-      },
+      onTap: () => _onPoliFilterChanged(label),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         margin: const EdgeInsets.only(right: 8),
@@ -242,6 +266,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
   Widget _buildOrganicDoctorCard(Doctor doctor) {
     return GlassCard(
       padding: EdgeInsets.zero,
+      blurEnabled: false, // Disabled in list for performance
       onTap: () {
         Navigator.push(
           context,

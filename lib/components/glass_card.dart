@@ -9,6 +9,10 @@ class GlassCard extends StatelessWidget {
   final List<Color>? gradientColors;
   final BorderRadiusGeometry? borderRadius;
 
+  /// Set to false in scrolling lists to disable expensive BackdropFilter blur.
+  /// This significantly improves scroll performance on Android devices.
+  final bool blurEnabled;
+
   const GlassCard({
     super.key,
     required this.child,
@@ -16,6 +20,7 @@ class GlassCard extends StatelessWidget {
     this.padding = const EdgeInsets.all(20),
     this.gradientColors,
     this.borderRadius,
+    this.blurEnabled = true,
   });
 
   @override
@@ -23,38 +28,55 @@ class GlassCard extends StatelessWidget {
     final effectiveBorderRadius =
         borderRadius ?? BorderRadius.circular(DesignSystem.radiusLarge);
 
-    Widget content = ClipRRect(
+    final containerDecoration = BoxDecoration(
+      // Use higher opacity when blur is disabled for better readability
+      color: Colors.white.withOpacity(blurEnabled ? 0.6 : 0.92),
       borderRadius: effectiveBorderRadius,
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-        child: Container(
-          padding: padding,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.6),
-            borderRadius: effectiveBorderRadius,
-            border: Border.all(
-              color: Colors.white.withOpacity(0.6),
-              width: 1.5,
-            ),
-            gradient: gradientColors != null
-                ? LinearGradient(
-                    colors: gradientColors!,
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  )
-                : DesignSystem.glassGradient,
-            boxShadow: [
-              BoxShadow(
-                color: DesignSystem.primary.withOpacity(0.05),
-                blurRadius: 20,
-                offset: const Offset(0, 10),
-              ),
-            ],
-          ),
-          child: child,
-        ),
+      border: Border.all(
+        color: Colors.white.withOpacity(blurEnabled ? 0.6 : 0.8),
+        width: 1.5,
       ),
+      gradient: gradientColors != null
+          ? LinearGradient(
+              colors: gradientColors!,
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            )
+          : (blurEnabled
+                ? DesignSystem.glassGradient
+                : DesignSystem.solidCardGradient),
+      boxShadow: [
+        BoxShadow(
+          color: DesignSystem.primary.withOpacity(0.05),
+          blurRadius: 20,
+          offset: const Offset(0, 10),
+        ),
+      ],
     );
+
+    Widget content;
+
+    if (blurEnabled) {
+      // Full glass effect with expensive BackdropFilter - use for static elements
+      content = ClipRRect(
+        borderRadius: effectiveBorderRadius,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+          child: Container(
+            padding: padding,
+            decoration: containerDecoration,
+            child: child,
+          ),
+        ),
+      );
+    } else {
+      // Performant solid card - use in scrolling lists
+      content = Container(
+        padding: padding,
+        decoration: containerDecoration,
+        child: child,
+      );
+    }
 
     if (onTap != null) {
       return GestureDetector(onTap: onTap, child: content);

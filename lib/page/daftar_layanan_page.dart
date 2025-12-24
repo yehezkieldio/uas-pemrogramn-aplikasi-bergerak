@@ -189,9 +189,12 @@ class _DaftarLayananPageState extends State<DaftarLayananPage>
                           child: Opacity(opacity: value, child: child),
                         );
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: _buildOrganicLayananCard(layanan, index),
+                      child: RepaintBoundary(
+                        key: ValueKey(layanan.name),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: _buildOrganicLayananCard(layanan, index),
+                        ),
                       ),
                     );
                   }, childCount: _layanan.length),
@@ -207,6 +210,7 @@ class _DaftarLayananPageState extends State<DaftarLayananPage>
   Widget _buildOrganicLayananCard(ClinicService layanan, int index) {
     return GlassCard(
       padding: EdgeInsets.zero,
+      blurEnabled: false, // Disabled in list for performance
       onTap: () {
         Navigator.push(
           context,
