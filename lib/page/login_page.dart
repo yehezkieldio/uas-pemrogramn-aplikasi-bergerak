@@ -52,24 +52,7 @@ class _LoginPageState extends State<LoginPage> {
 
       Navigator.pushReplacement(
         context,
-        PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 800),
-          pageBuilder: (_, _, _) => const HomePage(),
-          transitionsBuilder: (_, animation, _, child) {
-            return FadeTransition(
-              opacity: animation,
-              child: ScaleTransition(
-                scale: Tween<double>(begin: 0.95, end: 1.0).animate(
-                  CurvedAnimation(
-                    parent: animation,
-                    curve: DesignSystem.curveOrganic,
-                  ),
-                ),
-                child: child,
-              ),
-            );
-          },
-        ),
+        DesignSystem.createRoute(const HomePage()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

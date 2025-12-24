@@ -242,13 +242,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
       onTap: () {
         Navigator.push(
           context,
-          PageRouteBuilder(
-            transitionDuration: const Duration(milliseconds: 400),
-            pageBuilder: (_, _, _) => DoctorDetailPage(doctor: doctor),
-            transitionsBuilder: (_, animation, _, child) {
-              return FadeTransition(opacity: animation, child: child);
-            },
-          ),
+          DesignSystem.createRoute(DoctorDetailPage(doctor: doctor)),
         );
       },
       child: Padding(

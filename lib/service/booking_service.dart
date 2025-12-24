@@ -7,20 +7,26 @@ class BookingService extends ChangeNotifier {
   BookingService._internal();
 
   final List<Booking> _bookings = [];
+  List<Booking> _upcomingBookings = [];
+  List<Booking> _pastBookings = [];
+
   List<Booking> get bookings => List.unmodifiable(_bookings);
+  List<Booking> get upcomingBookings => List.unmodifiable(_upcomingBookings);
+  List<Booking> get pastBookings => List.unmodifiable(_pastBookings);
 
   void addBooking(Booking booking) {
     _bookings.add(booking);
+    _updateCache();
     notifyListeners();
   }
 
-  // Helper to get bookings by status
-  List<Booking> get upcomingBookings =>
-      _bookings.where((b) => b.status == BookingStatus.upcoming).toList();
-
-  List<Booking> get pastBookings => _bookings
-      .where((b) =>
-          b.status == BookingStatus.completed ||
-          b.status == BookingStatus.cancelled)
-      .toList();
+  void _updateCache() {
+    _upcomingBookings =
+        _bookings.where((b) => b.status == BookingStatus.upcoming).toList();
+    _pastBookings = _bookings
+        .where((b) =>
+            b.status == BookingStatus.completed ||
+            b.status == BookingStatus.cancelled)
+        .toList();
+  }
 }

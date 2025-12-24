@@ -208,25 +208,13 @@ class _DaftarPoliPageState extends State<DaftarPoliPage>
         onTap: () {
           Navigator.push(
             context,
-            PageRouteBuilder(
-              transitionDuration: const Duration(milliseconds: 500),
-              pageBuilder: (_, _, _) => DaftarLayananPage(poli: poli),
-              transitionsBuilder: (_, animation, _, child) {
-                return FadeTransition(opacity: animation, child: child);
-              },
-            ),
+            DesignSystem.createRoute(DaftarLayananPage(poli: poli)),
           );
         },
         onLongPress: () {
           Navigator.push(
             context,
-            PageRouteBuilder(
-              transitionDuration: const Duration(milliseconds: 500),
-              pageBuilder: (_, _, _) => DetailPoliPage(poli: poli),
-              transitionsBuilder: (_, animation, _, child) {
-                return FadeTransition(opacity: animation, child: child);
-              },
-            ),
+            DesignSystem.createRoute(DetailPoliPage(poli: poli)),
           );
         },
         child: Padding(

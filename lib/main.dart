@@ -26,7 +26,6 @@ class KlinikSehatApp extends StatelessWidget {
     return MaterialApp(
       title: 'Klinik Sehat',
       debugShowCheckedModeBanner: false,
-      // Minimal theme config, as we use custom widgets mostly
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: DesignSystem.zenWhite,

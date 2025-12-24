@@ -361,31 +361,7 @@ class _HomePageState extends State<HomePage>
   }) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            transitionDuration: const Duration(milliseconds: 500),
-            pageBuilder: (_, _, _) => page,
-            transitionsBuilder: (_, animation, _, child) {
-              return FadeTransition(
-                opacity: animation,
-                child: SlideTransition(
-                  position:
-                      Tween<Offset>(
-                        begin: const Offset(0.1, 0),
-                        end: Offset.zero,
-                      ).animate(
-                        CurvedAnimation(
-                          parent: animation,
-                          curve: DesignSystem.curveOrganic,
-                        ),
-                      ),
-                  child: child,
-                ),
-              );
-            },
-          ),
-        );
+        Navigator.push(context, DesignSystem.createRoute(page));
       },
       child: Container(
         height: 140,

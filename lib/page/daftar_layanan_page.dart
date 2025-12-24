@@ -209,13 +209,8 @@ class _DaftarLayananPageState extends State<DaftarLayananPage>
       onTap: () {
         Navigator.push(
           context,
-          PageRouteBuilder(
-            transitionDuration: const Duration(milliseconds: 400),
-            pageBuilder: (_, _, _) =>
-                DetailLayananPage(service: layanan, poliName: widget.poli.name),
-            transitionsBuilder: (_, animation, _, child) {
-              return FadeTransition(opacity: animation, child: child);
-            },
+          DesignSystem.createRoute(
+            DetailLayananPage(service: layanan, poliName: widget.poli.name),
           ),
         );
       },
