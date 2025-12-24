@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../model/poli.dart';
+import '../design_system.dart';
+import '../components/glass_card.dart';
 import 'detail_layanan_page.dart';
 
 class DaftarLayananPage extends StatefulWidget {
@@ -36,222 +38,250 @@ class _DaftarLayananPageState extends State<DaftarLayananPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F1),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1A7F7A),
-        elevation: 0,
-        title: Text(
-          'Layanan ${widget.poli.name}',
-          style: const TextStyle(
-            fontWeight: FontWeight.w400,
-            letterSpacing: -0.3,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(Icons.arrow_back_ios_rounded, size: 18),
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: Column(
+      backgroundColor: DesignSystem.zenWhite,
+      body: Stack(
         children: [
-          // Header with poli info
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(24),
-            decoration: const BoxDecoration(
-              color: Color(0xFF1A7F7A),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(40),
-                bottomRight: Radius.circular(40),
+          // Background Gradient
+          Positioned.fill(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [DesignSystem.zenWhite, DesignSystem.liquidBlue],
+                  stops: [0.3, 1.0],
+                ),
               ),
             ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Icon(
-                    widget.poli.icon,
-                    color: const Color(0xFF1A7F7A),
-                    size: 32,
+          ),
+
+          CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              // Organic AppBar
+              SliverAppBar(
+                expandedHeight: 180,
+                floating: false,
+                pinned: true,
+                backgroundColor: DesignSystem.primary,
+                elevation: 0,
+                leading: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: IconButton(
+                    icon: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () => Navigator.pop(context),
                   ),
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Stack(
                     children: [
-                      Text(
-                        widget.poli.name,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                      Container(
+                        decoration: const BoxDecoration(
+                          gradient: DesignSystem.primaryGradient,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${_layanan.length} layanan tersedia',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.8),
-                          fontSize: 14,
+                      Positioned(
+                        right: -30,
+                        top: -30,
+                        child: Container(
+                          width: 150,
+                          height: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.1),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 20,
+                        bottom: 20,
+                        child: SafeArea(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Hero(
+                                tag: 'poli-icon-${widget.poli.id}',
+                                child: Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    widget.poli.icon,
+                                    color: DesignSystem.primary,
+                                    size: 32,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.poli.name,
+                                    style: DesignSystem.titleLarge.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${_layanan.length} layanan tersedia',
+                                    style: DesignSystem.bodyMedium.copyWith(
+                                      color: Colors.white.withOpacity(0.9),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-
-          // Services list using ListView.builder
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(24),
-              itemCount: _layanan.length,
-              itemBuilder: (context, index) {
-                final layanan = _layanan[index];
-
-                // Staggered animation
-                final animation = Tween<double>(begin: 0, end: 1).animate(
-                  CurvedAnimation(
-                    parent: _animController,
-                    curve: Interval(
-                      index * 0.12,
-                      0.5 + index * 0.1,
-                      curve: Curves.easeOutCubic,
-                    ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(DesignSystem.radiusLarge),
                   ),
-                );
+                ),
+              ),
 
-                return AnimatedBuilder(
-                  animation: animation,
-                  builder: (context, child) {
-                    return Transform.translate(
-                      offset: Offset(0, 20 * (1 - animation.value)),
-                      child: Opacity(opacity: animation.value, child: child),
+              // Services List
+              SliverPadding(
+                padding: const EdgeInsets.all(24),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final layanan = _layanan[index];
+
+                    final animation = Tween<double>(begin: 0, end: 1).animate(
+                      CurvedAnimation(
+                        parent: _animController,
+                        curve: Interval(
+                          index * 0.12,
+                          0.5 + index * 0.1,
+                          curve: DesignSystem.curveOrganic,
+                        ),
+                      ),
                     );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: _buildLayananCard(layanan, index),
-                  ),
-                );
-              },
-            ),
+
+                    return AnimatedBuilder(
+                      animation: animation,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Offset(0, 20 * (1 - animation.value)),
+                          child: Opacity(
+                            opacity: animation.value,
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: _buildOrganicLayananCard(layanan, index),
+                      ),
+                    );
+                  }, childCount: _layanan.length),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildLayananCard(ClinicService layanan, int index) {
-    final colors = [
-      const Color(0xFF1A7F7A),
-      const Color(0xFF5C6BC0),
-      const Color(0xFFFF7043),
-      const Color(0xFF26A69A),
-      const Color(0xFF42A5F5),
-    ];
-
-    final color = colors[index % colors.length];
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 15,
-            offset: const Offset(0, 6),
+  Widget _buildOrganicLayananCard(ClinicService layanan, int index) {
+    return GlassCard(
+      padding: EdgeInsets.zero,
+      onTap: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 400),
+            pageBuilder: (_, _, _) =>
+                DetailLayananPage(service: layanan, poliName: widget.poli.name),
+            transitionsBuilder: (_, animation, _, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
           ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(16),
-          onTap: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                transitionDuration: const Duration(milliseconds: 400),
-                pageBuilder: (_, _, _) => DetailLayananPage(
-                  service: layanan,
-                  poliName: widget.poli.name,
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            // Index Bubble
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    DesignSystem.primary.withOpacity(0.1),
+                    DesignSystem.secondary.withOpacity(0.2),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                transitionsBuilder: (_, animation, _, child) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
+                shape: BoxShape.circle,
               ),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                // Index indicator
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Center(
-                    child: Text(
-                      '${index + 1}',
-                      style: TextStyle(
-                        color: color,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
+              child: Center(
+                child: Text(
+                  '${index + 1}',
+                  style: DesignSystem.titleMedium.copyWith(
+                    color: DesignSystem.primary,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(width: 16),
-                // Layanan name
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        layanan.name,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey.shade800,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        layanan.priceRange,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey.shade500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                // Trailing icon
-                Icon(Icons.chevron_right_rounded, color: Colors.grey.shade400),
-              ],
+              ),
             ),
-          ),
+            const SizedBox(width: 16),
+
+            // Info
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    layanan.name,
+                    style: DesignSystem.titleMedium.copyWith(fontSize: 16),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    layanan.priceRange,
+                    style: DesignSystem.bodyMedium.copyWith(fontSize: 13),
+                  ),
+                ],
+              ),
+            ),
+
+            // Icon
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: DesignSystem.zenWhite,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                Icons.arrow_forward_rounded,
+                size: 20,
+                color: DesignSystem.primary.withOpacity(0.6),
+              ),
+            ),
+          ],
         ),
       ),
     );

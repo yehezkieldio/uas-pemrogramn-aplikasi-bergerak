@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'page/login_page.dart';
-import 'theme.dart';
+import 'design_system.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,7 +10,7 @@ void main() {
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Color(0xFFF5F5F1),
+      systemNavigationBarColor: DesignSystem.zenWhite,
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
@@ -26,7 +26,16 @@ class KlinikSehatApp extends StatelessWidget {
     return MaterialApp(
       title: 'Klinik Sehat',
       debugShowCheckedModeBanner: false,
-      theme: KlinikTheme.buildTheme(),
+      // Minimal theme config, as we use custom widgets mostly
+      theme: ThemeData(
+        useMaterial3: true,
+        scaffoldBackgroundColor: DesignSystem.zenWhite,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: DesignSystem.primary,
+          surface: DesignSystem.zenWhite,
+        ),
+        fontFamily: DesignSystem.bodyMedium.fontFamily,
+      ),
       home: const LoginPage(),
     );
   }

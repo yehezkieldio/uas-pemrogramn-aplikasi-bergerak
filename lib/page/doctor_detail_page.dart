@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../model/doctor.dart';
+import '../design_system.dart';
+import '../components/glass_card.dart';
+import '../components/organic_button.dart';
 import 'booking_page.dart';
 
 class DoctorDetailPage extends StatelessWidget {
@@ -10,249 +13,260 @@ class DoctorDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F1),
-      body: CustomScrollView(
-        slivers: [
-          // Header App Bar
-          SliverAppBar(
-            expandedHeight: 300,
-            pinned: true,
-            backgroundColor: const Color(0xFF1A7F7A),
-            leading: Padding(
-              padding: const EdgeInsets.all(8),
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    Icons.arrow_back_ios_rounded,
-                    size: 18,
-                    color: Colors.white,
-                  ),
+      backgroundColor: DesignSystem.zenWhite,
+      body: Stack(
+        children: [
+          // Background Gradient
+          Positioned.fill(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [DesignSystem.zenWhite, DesignSystem.liquidBlue],
+                  stops: [0.3, 1.0],
                 ),
-              ),
-            ),
-            flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                fit: StackFit.expand,
-                children: [
-                  // Gradient Background
-                  Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Color(0xFF1A7F7A), Color(0xFF26A69A)],
-                      ),
-                    ),
-                  ),
-                  // Background Pattern (Circles)
-                  Positioned(
-                    right: -50,
-                    top: 50,
-                    child: Container(
-                      width: 200,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: -30,
-                    top: 150,
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.05),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                  // Doctor Avatar Big
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 20),
-                      width: 160,
-                      height: 160,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 4),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 20,
-                            offset: const Offset(0, 10),
-                          ),
-                        ],
-                      ),
-                      child: const Icon(
-                        Icons.person_rounded,
-                        size: 100,
-                        color: Color(0xFFCFD8DC),
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ),
           ),
 
-          // Content
-          SliverToBoxAdapter(
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFFF5F5F1),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
+          CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              // Header App Bar
+              SliverAppBar(
+                expandedHeight: 320,
+                pinned: true,
+                backgroundColor: DesignSystem.primary,
+                elevation: 0,
+                leading: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  background: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      // Gradient Background
+                      Container(
+                        decoration: const BoxDecoration(
+                          gradient: DesignSystem.primaryGradient,
+                        ),
+                      ),
+                      // Liquid Patterns
+                      Positioned(
+                        right: -60,
+                        top: 40,
+                        child: Container(
+                          width: 220,
+                          height: 220,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.08),
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(100),
+                              bottomLeft: Radius.circular(60),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: -40,
+                        top: 120,
+                        child: Container(
+                          width: 140,
+                          height: 140,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.05),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                      // Doctor Avatar Big
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 30),
+                          width: 160,
+                          height: 160,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 4),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.15),
+                                blurRadius: 30,
+                                offset: const Offset(0, 15),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            Icons.person_rounded,
+                            size: 100,
+                            color: DesignSystem.textGrey.withOpacity(0.5),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(DesignSystem.radiusLarge),
+                  ),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  children: [
-                    // Name and Specialty
-                    Text(
-                      doctor.name,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF2D3436),
+
+              // Content
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      // Name and Specialty
+                      Text(
+                        doctor.name,
+                        style: DesignSystem.titleLarge.copyWith(fontSize: 24),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      doctor.specialty,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Color(0xFF1A7F7A),
-                        fontWeight: FontWeight.w600,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    // Stats Row
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildStatItem(
-                          'Rating',
-                          doctor.rating.toString(),
-                          Icons.star_rounded,
-                          const Color(0xFFFBC02D),
+                      const SizedBox(height: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 6,
                         ),
-                        _buildStatItem(
-                          'Pengalaman',
-                          '${doctor.experienceYears} Thn',
-                          Icons.work_rounded,
-                          const Color(0xFF5C6BC0),
+                        decoration: BoxDecoration(
+                          color: DesignSystem.secondary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        _buildStatItem(
-                          'Pasien',
-                          '1k+',
-                          Icons.people_rounded,
-                          const Color(0xFFEF5350),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 32),
-
-                    // About Section
-                    _buildSectionHeader('Tentang Dokter'),
-                    const SizedBox(height: 12),
-                    Text(
-                      doctor.description,
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey.shade600,
-                        height: 1.6,
-                      ),
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    // Schedule Section
-                    _buildSectionHeader('Jadwal Praktik'),
-                    const SizedBox(height: 12),
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 15,
-                            offset: const Offset(0, 5),
+                        child: Text(
+                          doctor.specialty,
+                          style: DesignSystem.bodyMedium.copyWith(
+                            color: DesignSystem.primary,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                      child: Column(
-                        children: [
-                          _buildScheduleRow(
+
+                      const SizedBox(height: 32),
+
+                      // Stats Row
+                      GlassCard(
+                        padding: const EdgeInsets.all(20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _buildStatItem(
+                              'Rating',
+                              doctor.rating.toString(),
+                              Icons.star_rounded,
+                              const Color(0xFFFBC02D),
+                            ),
+                            Container(
+                              width: 1,
+                              height: 40,
+                              color: DesignSystem.textGrey.withOpacity(0.2),
+                            ),
+                            _buildStatItem(
+                              'Pengalaman',
+                              '${doctor.experienceYears} Thn',
+                              Icons.work_rounded,
+                              const Color(0xFF5C6BC0),
+                            ),
+                            Container(
+                              width: 1,
+                              height: 40,
+                              color: DesignSystem.textGrey.withOpacity(0.2),
+                            ),
+                            _buildStatItem(
+                              'Pasien',
+                              '1k+',
+                              Icons.people_rounded,
+                              const Color(0xFFEF5350),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 32),
+
+                      // About Section
+                      _buildSectionHeader('Tentang Dokter'),
+                      const SizedBox(height: 16),
+                      Text(
+                        doctor.description,
+                        style: DesignSystem.bodyMedium.copyWith(
+                          fontSize: 15,
+                          height: 1.6,
+                        ),
+                      ),
+
+                      const SizedBox(height: 32),
+
+                      // Schedule Section
+                      _buildSectionHeader('Jadwal Praktik'),
+                      const SizedBox(height: 16),
+                      GlassCard(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            _buildScheduleRow(
                               Icons.calendar_today_rounded,
                               'Hari Praktik',
-                              doctor.availableDays.join(', ')),
-                          const Divider(height: 24),
-                          _buildScheduleRow(
+                              doctor.availableDays.join(', '),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: Divider(
+                                height: 1,
+                                color: DesignSystem.textGrey.withOpacity(0.1),
+                              ),
+                            ),
+                            _buildScheduleRow(
                               Icons.access_time_rounded,
                               'Jam Praktik',
-                              doctor.availableHours),
-                        ],
+                              doctor.availableHours,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
 
-                    const SizedBox(height: 40),
+                      const SizedBox(height: 40),
 
-                    // Book Button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
+                      // Book Button using OrganicButton
+                      OrganicButton(
+                        text: 'Buat Janji Konsultasi',
+                        onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  BookingPage(doctor: doctor),
+                              builder: (context) => BookingPage(doctor: doctor),
                             ),
                           );
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1A7F7A),
-                          padding: const EdgeInsets.symmetric(vertical: 18),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 8,
-                          shadowColor: const Color(0xFF1A7F7A).withOpacity(0.5),
-                        ),
-                        child: const Text(
-                          'Buat Janji Konsultasi',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
+                        icon: Icons.calendar_month_rounded,
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ],
       ),
@@ -260,49 +274,25 @@ class DoctorDetailPage extends StatelessWidget {
   }
 
   Widget _buildStatItem(
-      String label, String value, IconData icon, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
+    return Column(
+      children: [
+        Icon(icon, color: color, size: 28),
+        const SizedBox(height: 8),
+        Text(value, style: DesignSystem.titleMedium.copyWith(fontSize: 18)),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: DesignSystem.bodyMedium.copyWith(
+            fontSize: 12,
+            color: DesignSystem.textGrey,
           ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: color, size: 20),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF2D3436),
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey.shade500,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -313,19 +303,12 @@ class DoctorDetailPage extends StatelessWidget {
           width: 4,
           height: 24,
           decoration: BoxDecoration(
-            color: const Color(0xFF1A7F7A),
+            color: DesignSystem.primary,
             borderRadius: BorderRadius.circular(4),
           ),
         ),
         const SizedBox(width: 12),
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF2D3436),
-          ),
-        ),
+        Text(title, style: DesignSystem.titleMedium.copyWith(fontSize: 18)),
       ],
     );
   }
@@ -334,12 +317,12 @@ class DoctorDetailPage extends StatelessWidget {
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: const Color(0xFFE8F5F3),
+            color: DesignSystem.secondary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(icon, color: const Color(0xFF1A7F7A), size: 20),
+          child: Icon(icon, color: DesignSystem.primary, size: 20),
         ),
         const SizedBox(width: 16),
         Expanded(
@@ -348,19 +331,15 @@ class DoctorDetailPage extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: TextStyle(
+                style: DesignSystem.bodyMedium.copyWith(
                   fontSize: 12,
-                  color: Colors.grey.shade500,
+                  color: DesignSystem.textGrey,
                 ),
               ),
               const SizedBox(height: 4),
               Text(
                 value,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF2D3436),
-                ),
+                style: DesignSystem.titleMedium.copyWith(fontSize: 14),
               ),
             ],
           ),

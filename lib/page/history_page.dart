@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import '../service/booking_service.dart';
 import '../model/booking.dart';
 import '../model/doctor.dart';
+import '../design_system.dart';
+import '../components/glass_card.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -30,60 +32,102 @@ class _HistoryPageState extends State<HistoryPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F1),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1A7F7A),
-        elevation: 0,
-        title: const Text(
-          'Riwayat Janji',
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-            letterSpacing: -0.3,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
+      backgroundColor: DesignSystem.zenWhite,
+      body: Stack(
+        children: [
+          // Background Gradient
+          Positioned.fill(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [DesignSystem.zenWhite, DesignSystem.liquidBlue],
+                  stops: [0.3, 1.0],
+                ),
+              ),
             ),
-            child: const Icon(Icons.arrow_back_ios_rounded, size: 18),
           ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorColor: Colors.white,
-          indicatorWeight: 3,
-          labelStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-            color: Colors.white,
-          ),
-          unselectedLabelStyle: const TextStyle(
-            fontWeight: FontWeight.w400,
-            color: Colors.white,
-          ),
-          tabs: const [
-            Tab(text: 'Mendatang'),
-            Tab(text: 'Selesai'),
-          ],
-        ),
-      ),
-      body: AnimatedBuilder(
-        animation: BookingService(),
-        builder: (context, _) {
-          final upcoming = BookingService().upcomingBookings;
-          final past = BookingService().pastBookings;
 
-          return TabBarView(
-            controller: _tabController,
-            children: [_buildBookingList(upcoming), _buildBookingList(past)],
-          );
-        },
+          NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                SliverAppBar(
+                  expandedHeight:
+                      120, // Reduced height since no complex flexible space
+                  pinned: true,
+                  backgroundColor: DesignSystem.primary,
+                  elevation: 0,
+                  leading: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          size: 18,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  centerTitle: true,
+                  title: Text(
+                    'Riwayat Janji',
+                    style: DesignSystem.titleLarge.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                  bottom: TabBar(
+                    controller: _tabController,
+                    indicatorColor: Colors.white,
+                    indicatorWeight: 4,
+                    indicatorSize: TabBarIndicatorSize.label,
+                    labelStyle: DesignSystem.titleMedium.copyWith(
+                      color: Colors.white,
+                    ),
+                    unselectedLabelStyle: DesignSystem.bodyMedium.copyWith(
+                      color: Colors.white.withOpacity(0.7),
+                    ),
+                    tabs: const [
+                      Tab(text: 'Mendatang'),
+                      Tab(text: 'Selesai'),
+                    ],
+                  ),
+                  flexibleSpace: Container(
+                    decoration: const BoxDecoration(
+                      gradient: DesignSystem.primaryGradient,
+                    ),
+                  ),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(DesignSystem.radiusLarge),
+                    ),
+                  ),
+                ),
+              ];
+            },
+            body: AnimatedBuilder(
+              animation: BookingService(),
+              builder: (context, _) {
+                final upcoming = BookingService().upcomingBookings;
+                final past = BookingService().pastBookings;
+
+                return TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _buildBookingList(upcoming),
+                    _buildBookingList(past),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -94,18 +138,23 @@ class _HistoryPageState extends State<HistoryPage>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.calendar_month_outlined,
-              size: 80,
-              color: Colors.grey.shade300,
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: DesignSystem.liquidBlue,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.calendar_month_outlined,
+                size: 60,
+                color: DesignSystem.primary.withOpacity(0.5),
+              ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             Text(
               'Belum ada janji temu',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey.shade600,
+              style: DesignSystem.titleMedium.copyWith(
+                color: DesignSystem.textGrey,
               ),
             ),
           ],
@@ -115,34 +164,27 @@ class _HistoryPageState extends State<HistoryPage>
 
     return ListView.builder(
       padding: const EdgeInsets.all(24),
+      physics: const BouncingScrollPhysics(),
       itemCount: bookings.length,
       itemBuilder: (context, index) {
         final booking = bookings[index];
         final doctor = daftarDokter.firstWhere((d) => d.id == booking.doctorId);
 
-        return _buildBookingCard(booking, doctor);
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: _buildOrganicBookingCard(booking, doctor),
+        );
       },
     );
   }
 
-  Widget _buildBookingCard(Booking booking, Doctor doctor) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 15,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
+  Widget _buildOrganicBookingCard(Booking booking, Doctor doctor) {
+    return GlassCard(
+      padding: EdgeInsets.zero, // Custom padding inside
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
             child: Row(
               children: [
                 // Doctor Avatar
@@ -150,13 +192,15 @@ class _HistoryPageState extends State<HistoryPage>
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF0F4F4),
-                    borderRadius: BorderRadius.circular(16),
+                    color: DesignSystem.liquidBlue,
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Icon(
-                    Icons.person_rounded,
-                    color: Color(0xFFCFD8DC),
-                    size: 40,
+                  child: const Center(
+                    child: Icon(
+                      Icons.person_rounded,
+                      color: Color(0xFFCFD8DC),
+                      size: 36,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -166,19 +210,15 @@ class _HistoryPageState extends State<HistoryPage>
                     children: [
                       Text(
                         doctor.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF2D3436),
-                        ),
+                        style: DesignSystem.titleMedium.copyWith(fontSize: 16),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         doctor.specialty,
-                        style: const TextStyle(
+                        style: DesignSystem.bodyMedium.copyWith(
                           fontSize: 14,
-                          color: Color(0xFF1A7F7A),
-                          fontWeight: FontWeight.w500,
+                          color: DesignSystem.primary,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -187,26 +227,30 @@ class _HistoryPageState extends State<HistoryPage>
                 // Queue Number Badge
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 8,
+                    horizontal: 16,
+                    vertical: 10,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE8F5F3),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: const Color(0xFF1A7F7A)),
+                    color: DesignSystem.secondary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: DesignSystem.secondary.withOpacity(0.3),
+                    ),
                   ),
                   child: Column(
                     children: [
-                      const Text(
+                      Text(
                         'Antrian',
-                        style: TextStyle(fontSize: 10, color: Colors.grey),
+                        style: DesignSystem.bodyMedium.copyWith(
+                          fontSize: 10,
+                          color: DesignSystem.textGrey,
+                        ),
                       ),
                       Text(
                         '#${booking.queueNumber}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF1A7F7A),
+                        style: DesignSystem.titleMedium.copyWith(
+                          fontSize: 20,
+                          color: DesignSystem.primary,
                         ),
                       ),
                     ],
@@ -215,42 +259,42 @@ class _HistoryPageState extends State<HistoryPage>
               ],
             ),
           ),
-          const Divider(height: 1),
+
+          Container(height: 1, color: DesignSystem.textGrey.withOpacity(0.1)),
+
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.calendar_today_rounded,
                       size: 16,
-                      color: Colors.grey,
+                      color: DesignSystem.textGrey,
                     ),
                     const SizedBox(width: 8),
                     Text(
                       DateFormat('EEEE, d MMM').format(booking.date),
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
+                      style: DesignSystem.bodyMedium.copyWith(
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.access_time_rounded,
                       size: 16,
-                      color: Colors.grey,
+                      color: DesignSystem.textGrey,
                     ),
                     const SizedBox(width: 8),
                     Text(
                       booking.time,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
+                      style: DesignSystem.bodyMedium.copyWith(
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],

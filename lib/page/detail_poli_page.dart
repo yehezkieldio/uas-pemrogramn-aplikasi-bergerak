@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../model/poli.dart';
 import '../model/doctor.dart';
+import '../design_system.dart';
+import '../components/glass_card.dart';
 import 'doctor_detail_page.dart';
 import 'detail_layanan_page.dart';
 
@@ -17,376 +19,359 @@ class DetailPoliPage extends StatelessWidget {
         .toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F1),
-      body: CustomScrollView(
-        slivers: [
-          // Hero header with blob decoration
-          SliverAppBar(
-            expandedHeight: 280,
-            pinned: true,
-            backgroundColor: const Color(0xFF1A7F7A),
-            leading: Padding(
-              padding: const EdgeInsets.all(8),
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    Icons.arrow_back_ios_rounded,
-                    size: 18,
-                    color: Colors.white,
-                  ),
+      backgroundColor: DesignSystem.zenWhite,
+      body: Stack(
+        children: [
+          // Background Gradient
+          Positioned.fill(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [DesignSystem.zenWhite, DesignSystem.liquidBlue],
+                  stops: [0.3, 1.0],
                 ),
-              ),
-            ),
-            flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                children: [
-                  // Gradient background
-                  Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Color(0xFF1A7F7A), Color(0xFF26A69A)],
-                      ),
-                    ),
-                  ),
-                  // Blob decorations
-                  Positioned(
-                    right: -60,
-                    top: -40,
-                    child: Container(
-                      width: 200,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: -40,
-                    bottom: 20,
-                    child: Container(
-                      width: 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.08),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                  // Icon and title
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 40),
-                        // Hero icon
-                        Hero(
-                          tag: 'poli-icon-${poli.id}',
-                          child: Container(
-                            padding: const EdgeInsets.all(28),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  blurRadius: 30,
-                                  offset: const Offset(0, 15),
-                                ),
-                              ],
-                            ),
-                            child: Icon(
-                              poli.icon,
-                              size: 56,
-                              color: const Color(0xFF1A7F7A),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          poli.name,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: -0.5,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
               ),
             ),
           ),
 
-          // Content
-          SliverToBoxAdapter(
-            child: Transform.translate(
-              offset: const Offset(0, -30),
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Color(0xFFF5F5F1),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
+          CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              // Hero header
+              SliverAppBar(
+                expandedHeight: 280,
+                pinned: true,
+                backgroundColor: DesignSystem.primary,
+                elevation: 0,
+                leading: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  background: Stack(
                     children: [
-                      const SizedBox(height: 10),
-
-                      // Info Row (Location & Hours)
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _buildInfoCard(
-                              Icons.location_on_rounded,
-                              'Lokasi',
-                              poli.location,
+                      // Gradient background
+                      Container(
+                        decoration: const BoxDecoration(
+                          gradient: DesignSystem.primaryGradient,
+                        ),
+                      ),
+                      // Liquid Blob decorations
+                      Positioned(
+                        right: -60,
+                        top: -40,
+                        child: Container(
+                          width: 220,
+                          height: 220,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.08),
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(110),
                             ),
                           ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: _buildInfoCard(
-                              Icons.access_time_rounded,
-                              'Jam Buka',
-                              poli.operatingHours,
+                        ),
+                      ),
+                      Positioned(
+                        left: -40,
+                        bottom: 40,
+                        child: Container(
+                          width: 150,
+                          height: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.05),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                      // Icon and title
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 20),
+                            // Hero icon container
+                            Hero(
+                              tag: 'poli-icon-${poli.id}',
+                              child: Container(
+                                padding: const EdgeInsets.all(28),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.15),
+                                      blurRadius: 30,
+                                      offset: const Offset(0, 15),
+                                    ),
+                                  ],
+                                ),
+                                child: Icon(
+                                  poli.icon,
+                                  size: 56,
+                                  color: DesignSystem.primary,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              poli.name,
+                              style: DesignSystem.titleLarge.copyWith(
+                                color: Colors.white,
+                                fontSize: 24, // Slightly smaller for better fit
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(DesignSystem.radiusLarge),
+                  ),
+                ),
+              ),
+
+              // Content Body
+              SliverPadding(
+                padding: const EdgeInsets.all(24),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate([
+                    // Info Row (Location & Hours)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildOrganicInfoCard(
+                            Icons.location_on_rounded,
+                            'Lokasi',
+                            poli.location,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: _buildOrganicInfoCard(
+                            Icons.access_time_filled_rounded,
+                            'Jam Buka',
+                            poli.operatingHours,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Description card
+                    GlassCard(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: DesignSystem.secondary.withOpacity(
+                                    0.1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Icon(
+                                  Icons.description_rounded,
+                                  color: DesignSystem.primary,
+                                  size: 20,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                'Deskripsi',
+                                style: DesignSystem.titleMedium.copyWith(
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            poli.description,
+                            style: DesignSystem.bodyMedium.copyWith(
+                              fontSize: 15,
                             ),
                           ),
                         ],
                       ),
+                    ),
 
-                      const SizedBox(height: 24),
+                    const SizedBox(height: 24),
 
-                      // Description card
-                      Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 20,
-                              offset: const Offset(0, 8),
+                    // Available Doctors (Horizontal List)
+                    if (doctors.isNotEmpty) ...[
+                      Row(
+                        children: [
+                          Container(
+                            width: 4,
+                            height: 24,
+                            decoration: BoxDecoration(
+                              color: DesignSystem.primary,
+                              borderRadius: BorderRadius.circular(4),
                             ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFE8F5F3),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: const Icon(
-                                    Icons.description_rounded,
-                                    color: Color(0xFF1A7F7A),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  'Deskripsi',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey.shade800,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              poli.description,
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.grey.shade600,
-                                height: 1.7,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      const SizedBox(height: 24),
-
-                      // Available Doctors (Horizontal List)
-                      if (doctors.isNotEmpty) ...[
-                        Row(
-                          children: [
-                            Container(
-                              width: 4,
-                              height: 24,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF1A7F7A),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Text(
-                              'Dokter Kami',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey.shade800,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        SizedBox(
-                          height: 160,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: doctors.length,
-                            itemBuilder: (context, index) {
-                              return _buildDoctorCard(context, doctors[index]);
-                            },
                           ),
-                        ),
-                        const SizedBox(height: 24),
-                      ],
-
-                      // Services preview
-                      Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 20,
-                              offset: const Offset(0, 8),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFE8F5F3),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: const Icon(
-                                    Icons.medical_services_rounded,
-                                    color: Color(0xFF1A7F7A),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  'Layanan Tersedia',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey.shade800,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 16),
-                            Wrap(
-                              spacing: 8,
-                              runSpacing: 8,
-                              children: poli.services.map((service) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => DetailLayananPage(
-                                          service: service,
-                                          poliName: poli.name,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFE8F5F3),
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Text(
-                                      service.name,
-                                      style: const TextStyle(
-                                        fontSize: 13,
-                                        color: Color(0xFF1A7F7A),
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          ],
+                          const SizedBox(width: 12),
+                          Text('Dokter Kami', style: DesignSystem.titleMedium),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        height: 180, // Increased height for better fit
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: doctors.length,
+                          itemBuilder: (context, index) {
+                            return _buildDoctorCard(context, doctors[index]);
+                          },
                         ),
                       ),
-
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 24),
                     ],
-                  ),
+
+                    // Services preview
+                    GlassCard(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: DesignSystem.secondary.withOpacity(
+                                    0.1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Icon(
+                                  Icons.medical_services_rounded,
+                                  color: DesignSystem.primary,
+                                  size: 20,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                'Layanan Tersedia',
+                                style: DesignSystem.titleMedium.copyWith(
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: poli.services.map((service) {
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailLayananPage(
+                                        service: service,
+                                        poliName: poli.name,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                borderRadius: BorderRadius.circular(20),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 14,
+                                    vertical: 8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: DesignSystem.secondary.withOpacity(
+                                      0.1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: DesignSystem.secondary.withOpacity(
+                                        0.2,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    service.name,
+                                    style: DesignSystem.bodyMedium.copyWith(
+                                      color: DesignSystem.primary,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 100), // Bottom padding
+                  ]),
                 ),
               ),
-            ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildInfoCard(IconData icon, String title, String value) {
-    return Container(
+  Widget _buildOrganicInfoCard(IconData icon, String title, String value) {
+    return GlassCard(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: const Color(0xFF1A7F7A), size: 24),
-          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: DesignSystem.liquidBlue,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: DesignSystem.primary, size: 20),
+          ),
+          const SizedBox(height: 12),
           Text(
             title,
-            style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+            style: DesignSystem.bodyMedium.copyWith(
+              fontSize: 12,
+              color: DesignSystem.textGrey,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             value,
-            style: const TextStyle(
+            style: DesignSystem.bodyMedium.copyWith(
               fontSize: 14,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF2D3436),
+              color: DesignSystem.textDark,
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -411,67 +396,66 @@ class DetailPoliPage extends StatelessWidget {
         );
       },
       child: Container(
-        width: 140,
+        width: 150,
         margin: const EdgeInsets.only(right: 16),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF0F4F4),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.person_rounded,
-                color: Color(0xFFCFD8DC),
-                size: 32,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              doctor.name,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF2D3436),
-              ),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.star_rounded,
-                  size: 14,
-                  color: Color(0xFFFBC02D),
+        child: GlassCard(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: DesignSystem.liquidBlue,
+                  shape: BoxShape.circle,
                 ),
-                const SizedBox(width: 4),
-                Text(
-                  doctor.rating.toString(),
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFFFBC02D),
-                  ),
+                child: const Icon(
+                  Icons.person_rounded,
+                  color: Color(0xFFCFD8DC),
+                  size: 40,
                 ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                doctor.name,
+                style: DesignSystem.bodyMedium.copyWith(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: DesignSystem.textDark,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFF9C4), // Light yellow
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.star_rounded,
+                      size: 14,
+                      color: Color(0xFFFBC02D),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      doctor.rating.toString(),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFF9A825),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

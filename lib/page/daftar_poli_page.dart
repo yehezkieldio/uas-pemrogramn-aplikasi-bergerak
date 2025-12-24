@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../model/poli.dart';
+import '../design_system.dart';
+import '../components/glass_card.dart';
 import 'daftar_layanan_page.dart';
 import 'detail_poli_page.dart';
 
@@ -32,229 +34,249 @@ class _DaftarPoliPageState extends State<DaftarPoliPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F1),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1A7F7A),
-        elevation: 0,
-        title: const Text(
-          'Daftar Poli Klinik',
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-            letterSpacing: -0.3,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(Icons.arrow_back_ios_rounded, size: 18),
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: Column(
+      backgroundColor: DesignSystem.zenWhite,
+      body: Stack(
         children: [
-          // Header decoration
-          Container(
-            height: 60,
-            decoration: const BoxDecoration(
-              color: Color(0xFF1A7F7A),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(40),
-                bottomRight: Radius.circular(40),
+          // Gradient Background
+          Positioned.fill(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [DesignSystem.zenWhite, DesignSystem.liquidBlue],
+                  stops: [0.3, 1.0],
+                ),
               ),
             ),
           ),
 
-          // Instruction
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24, 20, 24, 8),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFE8F5F3),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.info_outline_rounded,
-                    color: Color(0xFF1A7F7A),
-                    size: 20,
+          CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              // Custom Organic AppBar
+              SliverAppBar(
+                expandedHeight: 120,
+                floating: false,
+                pinned: true,
+                backgroundColor: DesignSystem.primary,
+                elevation: 0,
+                leading: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Colors.white,
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'Tap untuk lihat layanan • Tekan lama untuk detail',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey.shade700,
+                  onPressed: () => Navigator.pop(context),
+                ),
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  title: Text(
+                    'Daftar Poli Klinik',
+                    style: DesignSystem.titleLarge.copyWith(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                  background: Container(
+                    decoration: const BoxDecoration(
+                      gradient: DesignSystem.primaryGradient,
+                    ),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          right: -20,
+                          top: -20,
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.1),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(DesignSystem.radiusLarge),
+                  ),
+                ),
+              ),
+
+              // Instruction
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: DesignSystem.secondary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(
+                        DesignSystem.radiusSmall,
+                      ),
+                      border: Border.all(
+                        color: DesignSystem.secondary.withOpacity(0.2),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // ListView of Poli
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(24),
-              itemCount: daftarPoli.length,
-              itemBuilder: (context, index) {
-                final poli = daftarPoli[index];
-
-                // Staggered animation
-                final animation = Tween<double>(begin: 0, end: 1).animate(
-                  CurvedAnimation(
-                    parent: _animController,
-                    curve: Interval(
-                      index * 0.15,
-                      0.6 + index * 0.1,
-                      curve: Curves.easeOutCubic,
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.touch_app_rounded,
+                          color: DesignSystem.primary,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            'Tap untuk lihat layanan • Tekan lama untuk detail',
+                            style: DesignSystem.bodyMedium.copyWith(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                );
+                ),
+              ),
 
-                return AnimatedBuilder(
-                  animation: animation,
-                  builder: (context, child) {
-                    return Transform.translate(
-                      offset: Offset(0, 30 * (1 - animation.value)),
-                      child: Opacity(opacity: animation.value, child: child),
+              // List of Poli
+              SliverPadding(
+                padding: const EdgeInsets.all(24),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final poli = daftarPoli[index];
+
+                    final animation = Tween<double>(begin: 0, end: 1).animate(
+                      CurvedAnimation(
+                        parent: _animController,
+                        curve: Interval(
+                          index * 0.1,
+                          0.6 + index * 0.1,
+                          curve: DesignSystem.curveOrganic,
+                        ),
+                      ),
                     );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: _buildPoliCard(context, poli),
-                  ),
-                );
-              },
-            ),
+
+                    return AnimatedBuilder(
+                      animation: animation,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Offset(0, 30 * (1 - animation.value)),
+                          child: Opacity(
+                            opacity: animation.value,
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: _buildOrganicPoliCard(context, poli),
+                      ),
+                    );
+                  }, childCount: daftarPoli.length),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildPoliCard(BuildContext context, Poli poli) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
+  Widget _buildOrganicPoliCard(BuildContext context, Poli poli) {
+    return GlassCard(
+      padding: EdgeInsets.zero,
+      onTap: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 500),
+            pageBuilder: (_, _, _) => DaftarLayananPage(poli: poli),
+            transitionsBuilder: (_, animation, _, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
           ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(20),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(20),
-          onTap: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                transitionDuration: const Duration(milliseconds: 400),
-                pageBuilder: (_, _, _) => DaftarLayananPage(poli: poli),
-                transitionsBuilder: (_, animation, _, child) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-              ),
-            );
-          },
-          onLongPress: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                transitionDuration: const Duration(milliseconds: 400),
-                pageBuilder: (_, _, _) => DetailPoliPage(poli: poli),
-                transitionsBuilder: (_, animation, _, child) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-              ),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                // Leading icon
-                Hero(
-                  tag: 'poli-icon-${poli.id}',
-                  child: Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          const Color(0xFF1A7F7A),
-                          const Color(0xFF26A69A),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF1A7F7A).withOpacity(0.3),
-                          blurRadius: 12,
-                          offset: const Offset(0, 6),
-                        ),
-                      ],
+        );
+      },
+      child: InkWell(
+        onLongPress: () {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              transitionDuration: const Duration(milliseconds: 500),
+              pageBuilder: (_, _, _) => DetailPoliPage(poli: poli),
+              transitionsBuilder: (_, animation, _, child) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+            ),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            children: [
+              // Liquid Icon Container
+              Hero(
+                tag: 'poli-icon-${poli.id}',
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    gradient: DesignSystem.primaryGradient,
+                    borderRadius: BorderRadius.circular(
+                      DesignSystem.radiusMedium,
                     ),
-                    child: Icon(poli.icon, color: Colors.white, size: 26),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                // Title and subtitle
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        poli.name,
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey.shade800,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${poli.services.length} layanan tersedia',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey.shade500,
-                        ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: DesignSystem.primary.withOpacity(0.3),
+                        blurRadius: 12,
+                        offset: const Offset(0, 6),
                       ),
                     ],
                   ),
+                  child: Icon(poli.icon, color: Colors.white, size: 28),
                 ),
-                // Arrow
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE8F5F3),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: Color(0xFF1A7F7A),
-                    size: 16,
-                  ),
+              ),
+              const SizedBox(width: 20),
+
+              // Title and Subtitle
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      poli.name,
+                      style: DesignSystem.titleMedium.copyWith(fontSize: 18),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${poli.services.length} layanan tersedia',
+                      style: DesignSystem.bodyMedium.copyWith(fontSize: 14),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+
+              // Arrow
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: DesignSystem.secondary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.arrow_forward_rounded,
+                  color: DesignSystem.primary.withOpacity(0.8),
+                  size: 20,
+                ),
+              ),
+            ],
           ),
         ),
       ),

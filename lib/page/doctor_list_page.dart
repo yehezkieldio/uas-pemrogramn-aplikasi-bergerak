@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../model/doctor.dart';
 import '../model/poli.dart';
+import '../design_system.dart';
+import '../components/glass_card.dart';
 import 'doctor_detail_page.dart';
 
 class DoctorListPage extends StatefulWidget {
@@ -35,119 +37,169 @@ class _DoctorListPageState extends State<DoctorListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F1),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1A7F7A),
-        elevation: 0,
-        title: const Text(
-          'Cari Dokter',
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-            letterSpacing: -0.3,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(Icons.arrow_back_ios_rounded, size: 18),
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: Column(
+      backgroundColor: DesignSystem.zenWhite,
+      body: Stack(
         children: [
-          // Header Search & Filter
-          Container(
-            padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-            decoration: const BoxDecoration(
-              color: Color(0xFF1A7F7A),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(32),
-                bottomRight: Radius.circular(32),
+          // Background Gradient
+          Positioned.fill(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [DesignSystem.zenWhite, DesignSystem.liquidBlue],
+                  stops: [0.3, 1.0],
+                ),
               ),
-            ),
-            child: Column(
-              children: [
-                // Search Bar
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: TextField(
-                    controller: _searchController,
-                    onChanged: (value) {
-                      setState(() {
-                        _searchQuery = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      hintText: 'Cari nama dokter...',
-                      hintStyle: TextStyle(color: Colors.grey.shade400),
-                      border: InputBorder.none,
-                      icon: Icon(
-                        Icons.search_rounded,
-                        color: const Color(0xFF1A7F7A).withOpacity(0.6),
-                      ),
-                      suffixIcon: _searchQuery.isNotEmpty
-                          ? IconButton(
-                              icon: const Icon(Icons.close_rounded),
-                              color: Colors.grey,
-                              onPressed: () {
-                                _searchController.clear();
-                                setState(() {
-                                  _searchQuery = '';
-                                });
-                              },
-                            )
-                          : null,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                // Category Filter
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      _buildFilterChip('Semua'),
-                      ...daftarPoli.map((poli) => _buildFilterChip(poli.name)),
-                    ],
-                  ),
-                ),
-              ],
             ),
           ),
 
-          // Doctor List
-          Expanded(
-            child: _filteredDoctors.isEmpty
-                ? _buildEmptyState()
-                : ListView.builder(
-                    padding: const EdgeInsets.all(24),
-                    itemCount: _filteredDoctors.length,
-                    itemBuilder: (context, index) {
-                      final doctor = _filteredDoctors[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: _buildDoctorCard(doctor),
-                      );
-                    },
+          Column(
+            children: [
+              // Custom Header with Search
+              Container(
+                padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
+                decoration: const BoxDecoration(
+                  gradient: DesignSystem.primaryGradient,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(DesignSystem.radiusLarge),
+                    bottomRight: Radius.circular(DesignSystem.radiusLarge),
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 20,
+                      offset: Offset(0, 10),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    // Top Bar
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              size: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            'Cari Dokter',
+                            textAlign: TextAlign.center,
+                            style: DesignSystem.titleLarge.copyWith(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 40), // Balance
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Search Bar
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: _searchController,
+                        style: DesignSystem.bodyMedium.copyWith(
+                          color: DesignSystem.textDark,
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            _searchQuery = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Cari nama dokter...',
+                          hintStyle: DesignSystem.bodyMedium.copyWith(
+                            color: DesignSystem.textGrey.withOpacity(0.5),
+                          ),
+                          border: InputBorder.none,
+                          icon: Icon(
+                            Icons.search_rounded,
+                            color: DesignSystem.primary.withOpacity(0.6),
+                          ),
+                          suffixIcon: _searchQuery.isNotEmpty
+                              ? IconButton(
+                                  icon: const Icon(Icons.close_rounded),
+                                  color: DesignSystem.textGrey,
+                                  onPressed: () {
+                                    _searchController.clear();
+                                    setState(() {
+                                      _searchQuery = '';
+                                    });
+                                  },
+                                )
+                              : null,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Filter Chips
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          _buildOrganicFilterChip('Semua'),
+                          ...daftarPoli.map(
+                            (poli) => _buildOrganicFilterChip(poli.name),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Doctor List
+              Expanded(
+                child: _filteredDoctors.isEmpty
+                    ? _buildEmptyState()
+                    : ListView.builder(
+                        padding: const EdgeInsets.all(24),
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: _filteredDoctors.length,
+                        itemBuilder: (context, index) {
+                          final doctor = _filteredDoctors[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: _buildOrganicDoctorCard(doctor),
+                          );
+                        },
+                      ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFilterChip(String label) {
+  Widget _buildOrganicFilterChip(String label) {
     final isSelected = _selectedPoli == label;
     return GestureDetector(
       onTap: () {
@@ -155,29 +207,38 @@ class _DoctorListPageState extends State<DoctorListPage> {
           _selectedPoli = label;
         });
       },
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
         margin: const EdgeInsets.only(right: 8),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected ? Colors.white : Colors.white.withOpacity(0.2),
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected
+                ? Colors.transparent
+                : Colors.white.withOpacity(0.3),
+            width: 1,
+          ),
         ),
         child: Text(
           label,
           style: TextStyle(
             color: isSelected
-                ? const Color(0xFF1A7F7A)
+                ? DesignSystem.primary
                 : Colors.white.withOpacity(0.9),
             fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
             fontSize: 13,
+            fontFamily: DesignSystem.bodyMedium.fontFamily,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildDoctorCard(Doctor doctor) {
-    return GestureDetector(
+  Widget _buildOrganicDoctorCard(Doctor doctor) {
+    return GlassCard(
+      padding: EdgeInsets.zero,
       onTap: () {
         Navigator.push(
           context,
@@ -190,19 +251,8 @@ class _DoctorListPageState extends State<DoctorListPage> {
           ),
         );
       },
-      child: Container(
+      child: Padding(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 15,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -211,19 +261,18 @@ class _DoctorListPageState extends State<DoctorListPage> {
               width: 80,
               height: 100,
               decoration: BoxDecoration(
-                color: const Color(0xFFF0F4F4),
+                color: DesignSystem.liquidBlue,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Stack(
                 children: [
-                  const Positioned(
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                    child: Icon(
-                      Icons.person_rounded,
-                      size: 60,
-                      color: Color(0xFFCFD8DC),
+                  const Positioned.fill(
+                    child: Center(
+                      child: Icon(
+                        Icons.person_rounded,
+                        size: 50,
+                        color: Color(0xFFCFD8DC),
+                      ),
                     ),
                   ),
                   // Online Indicator
@@ -234,7 +283,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
                       width: 12,
                       height: 12,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF4DB6AC),
+                        color: DesignSystem.secondary,
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 2),
                       ),
@@ -255,10 +304,8 @@ class _DoctorListPageState extends State<DoctorListPage> {
                       Expanded(
                         child: Text(
                           doctor.name,
-                          style: const TextStyle(
+                          style: DesignSystem.titleMedium.copyWith(
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF2D3436),
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -286,7 +333,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
                               style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFFFBC02D),
+                                color: Color(0xFFF9A825),
                               ),
                             ),
                           ],
@@ -298,9 +345,9 @@ class _DoctorListPageState extends State<DoctorListPage> {
                   // Specialty
                   Text(
                     doctor.specialty,
-                    style: const TextStyle(
+                    style: DesignSystem.bodyMedium.copyWith(
                       fontSize: 13,
-                      color: Color(0xFF1A7F7A),
+                      color: DesignSystem.primary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -308,7 +355,10 @@ class _DoctorListPageState extends State<DoctorListPage> {
                   // Experience
                   Text(
                     '${doctor.experienceYears} Tahun Pengalaman',
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                    style: DesignSystem.bodyMedium.copyWith(
+                      fontSize: 12,
+                      color: DesignSystem.textGrey,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   // Action Button
@@ -316,16 +366,16 @@ class _DoctorListPageState extends State<DoctorListPage> {
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE8F5F3),
+                      color: DesignSystem.secondary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
                         'Buat Janji',
-                        style: TextStyle(
+                        style: DesignSystem.bodyMedium.copyWith(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF1A7F7A),
+                          color: DesignSystem.primary,
                         ),
                       ),
                     ),
@@ -344,20 +394,22 @@ class _DoctorListPageState extends State<DoctorListPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.search_off_rounded, size: 80, color: Colors.grey.shade300),
+          Icon(
+            Icons.search_off_rounded,
+            size: 80,
+            color: Colors.grey.withOpacity(0.4),
+          ),
           const SizedBox(height: 16),
           Text(
             'Dokter tidak ditemukan',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey.shade600,
+            style: DesignSystem.titleMedium.copyWith(
+              color: DesignSystem.textGrey,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Coba ubah filter atau kata kunci pencarian',
-            style: TextStyle(fontSize: 14, color: Colors.grey.shade400),
+            'Coba ubah filter atau kata kunci',
+            style: DesignSystem.bodyMedium,
           ),
         ],
       ),

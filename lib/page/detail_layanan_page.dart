@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../model/poli.dart';
+import '../design_system.dart';
+import '../components/glass_card.dart';
 
 class DetailLayananPage extends StatelessWidget {
   final ClinicService service;
@@ -14,209 +16,231 @@ class DetailLayananPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F1),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1A7F7A),
-        elevation: 0,
-        title: const Text(
-          'Detail Layanan',
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-            letterSpacing: -0.3,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(Icons.arrow_back_ios_rounded, size: 18),
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Header Decoration
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(24, 10, 24, 40),
+      backgroundColor: DesignSystem.zenWhite,
+      body: Stack(
+        children: [
+          // Background Gradient
+          Positioned.fill(
+            child: Container(
               decoration: const BoxDecoration(
-                color: Color(0xFF1A7F7A),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(40),
-                  bottomRight: Radius.circular(40),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [DesignSystem.zenWhite, DesignSystem.liquidBlue],
+                  stops: [0.3, 1.0],
                 ),
               ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.3),
-                        width: 2,
-                      ),
-                    ),
-                    child: const Icon(
-                      Icons.medical_services_rounded,
-                      size: 48,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    service.name,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: -0.5,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      poliName,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
+          ),
 
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Price & Duration Cards
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildInfoCard(
-                          icon: Icons.monetization_on_rounded,
-                          title: 'Biaya',
-                          value: service.priceRange,
-                          color: const Color(0xFF26A69A),
-                        ),
+          CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              SliverAppBar(
+                expandedHeight: 250,
+                pinned: true,
+                backgroundColor: DesignSystem.primary,
+                elevation: 0,
+                leading: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: _buildInfoCard(
-                          icon: Icons.timer_rounded,
-                          title: 'Durasi',
-                          value: service.duration,
-                          color: const Color(0xFFFFA726),
-                        ),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        size: 18,
+                        color: Colors.white,
                       ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  // Description Section
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(24),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 20,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                  ),
+                ),
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Stack(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          gradient: DesignSystem.primaryGradient,
+                        ),
+                      ),
+                      // Liquid Decorations
+                      Positioned(
+                        right: -50,
+                        top: -50,
+                        child: Container(
+                          width: 200,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.08),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: -30,
+                        bottom: 20,
+                        child: Container(
+                          width: 120,
+                          height: 120,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.05),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                      // Content
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            const SizedBox(height: 20),
                             Container(
-                              padding: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(24),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFE8F5F3),
-                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.white.withOpacity(0.15),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.2),
+                                  width: 2,
+                                ),
                               ),
                               child: const Icon(
-                                Icons.description_rounded,
-                                color: Color(0xFF1A7F7A),
+                                Icons.medical_services_rounded,
+                                size: 48,
+                                color: Colors.white,
                               ),
                             ),
-                            const SizedBox(width: 16),
+                            const SizedBox(height: 20),
                             Text(
-                              'Tentang Layanan',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey.shade800,
+                              service.name,
+                              style: DesignSystem.titleLarge.copyWith(
+                                color: Colors.white,
+                                fontSize: 24,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                poliName,
+                                style: DesignSystem.bodyMedium.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16),
-                        Text(
-                          service.description,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey.shade600,
-                            height: 1.6,
+                      ),
+                    ],
+                  ),
+                ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(DesignSystem.radiusLarge),
+                  ),
+                ),
+              ),
+
+              SliverPadding(
+                padding: const EdgeInsets.all(24),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate([
+                    // Info Cards
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildOrganicInfoCard(
+                            icon: Icons.monetization_on_rounded,
+                            title: 'Biaya',
+                            value: service.priceRange,
+                            color: const Color(0xFF26A69A),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: _buildOrganicInfoCard(
+                            icon: Icons.timer_rounded,
+                            title: 'Durasi',
+                            value: service.duration,
+                            color: const Color(0xFFFFA726),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ],
+
+                    const SizedBox(height: 24),
+
+                    // Description
+                    GlassCard(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: DesignSystem.secondary.withOpacity(
+                                    0.1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Icon(
+                                  Icons.description_rounded,
+                                  color: DesignSystem.primary,
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Text(
+                                'Tentang Layanan',
+                                style: DesignSystem.titleMedium.copyWith(
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            service.description,
+                            style: DesignSystem.bodyMedium.copyWith(
+                              fontSize: 15,
+                              height: 1.6,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ]),
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildInfoCard({
+  Widget _buildOrganicInfoCard({
     required IconData icon,
     required String title,
     required String value,
     required Color color,
   }) {
-    return Container(
+    return GlassCard(
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -231,19 +255,18 @@ class DetailLayananPage extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             title,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey.shade500,
+            style: DesignSystem.bodyMedium.copyWith(
+              fontSize: 13,
+              color: DesignSystem.textGrey,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             value,
-            style: const TextStyle(
+            style: DesignSystem.titleMedium.copyWith(
               fontSize: 16,
+              color: DesignSystem.textDark,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF2D3436),
             ),
           ),
         ],
